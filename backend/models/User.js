@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    enum: ['admin', 'employee'],
+    default: 'employee'
+  },
   created_at: {
     type: Date,
     default: Date.now,
@@ -43,6 +48,7 @@ userSchema.methods.generateAccessToken = function(){
             _id: this._id,
             email: this.email,
             name: this.name,  
+            role:this.role,
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
@@ -51,5 +57,5 @@ userSchema.methods.generateAccessToken = function(){
     )
 }
 
-const User = mongoose.model('User', userSchema);
-export default User;
+export const User = mongoose.model('User', userSchema);
+

@@ -28,5 +28,4 @@ const courseModuleSchema = new mongoose.Schema({
   },
 });
 
-const CourseModule = mongoose.model('CourseModule', courseModuleSchema);
-export default CourseModule;
+export const CourseModule = mongoose.model('CourseModule', courseModuleSchema);

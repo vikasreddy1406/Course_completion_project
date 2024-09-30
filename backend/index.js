@@ -13,7 +13,13 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(cookieParser())
-const PORT=process.env.PORT
+const PORT = process.env.PORT
+
+import userRoutes from "./routes/userRoutes.js"
+
+
+
+app.use('/api/user',userRoutes)
 
 
 

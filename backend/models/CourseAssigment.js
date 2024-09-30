@@ -17,5 +17,5 @@ const courseAssignmentSchema = new mongoose.Schema({
   },
 });
 
-const CourseAssignment = mongoose.model('CourseAssignment', courseAssignmentSchema);
-export default CourseAssignment;
+export const CourseAssignment = mongoose.model('CourseAssignment', courseAssignmentSchema);
+
