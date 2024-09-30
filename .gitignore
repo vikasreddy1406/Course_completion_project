@@ -1,0 +1,25 @@
+# Dependencies
+/frontend/node_modules
+/backend/node_modules
+
+# Build output
+/frontend/build
+
+# Testing
+/frontend/coverage
+
+# Environment files
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/backend/.env
+
+# Miscellaneous
+/frontend/.DS_Store
+/backend/dbconfig.js
+
+# Logs
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
