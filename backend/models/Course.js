@@ -11,11 +11,9 @@ const courseSchema = new mongoose.Schema({
   },
   duration: {
     type: Number, 
-    required: true,
   },
   modules: {
     type: Number,  
-    required: true,
   },
   created_at: {
     type: Date,

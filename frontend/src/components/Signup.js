@@ -10,7 +10,7 @@ export default function Signup() {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "", // Match with User.js enum values
+        role: "employee", 
     });
     const [loading, setLoading] = useState(false);
 
@@ -52,8 +52,12 @@ export default function Signup() {
                 showAlert("Account created successfully");
                 navigate("/login");
             }
+            if (response.status === 201) {
+                showAlert("User with this email already exists");
+            }
         } catch (error) {
             setLoading(false);
+            console.log(error)
             showAlert("Error creating account");
         }
     };

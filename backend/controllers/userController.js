@@ -2,7 +2,7 @@ import { User } from "../models/User.js"
 
 
 const registerUser = async (req, res) => {
-    const { name, email, password} = req.body;  
+    const { name, email, password,role} = req.body;  
 
     try {
         
@@ -13,7 +13,7 @@ const registerUser = async (req, res) => {
         // Check if the user already exists by email
         const existedUser = await User.findOne({ email });
         if (existedUser) {
-            return res.status(409).json({ message: "User with this email already exists" }); 
+            return res.status(201).json({ message: "User with this email already exists" }); 
         }
 
         
@@ -36,7 +36,7 @@ const registerUser = async (req, res) => {
         }
 
         
-        return res.status(201).json(createdUser);
+        return res.status(200).json(createdUser);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -56,7 +56,7 @@ const loginUser = async (req, res) => {
 
         const isPasswordValid = await user.isPasswordCorrect(password);  
         if (!isPasswordValid) {
-            return res.status(401).json({ message: "Invalid Password" });  
+            return res.status(202).json({ message: "Invalid Password" });  
         }
 
         const accessToken = user.generateAccessToken();

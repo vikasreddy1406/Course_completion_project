@@ -9,6 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from "./components/Home.js";
 import Navbar from "./components/Navbar.js";
 import AdminHome from "./components/AdminHome.js";
+import Contact from "./components/Contact.js";
+import CreateCourse from "./components/CreateCourse.js";
+import CourseDetails from "./components/CourseDetails.js";
 
 
 function App() {
@@ -39,6 +42,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<AdminHome />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/create-course" element={<CreateCourse />} />
+          <Route path="/courses/:courseId" element={<CourseDetails />} />
+          
+          
         </Routes>
         <ToastContainer
           position="top-right"
@@ -64,4 +72,3 @@ export default function Root() {
     </Router>
   );
 }
-  

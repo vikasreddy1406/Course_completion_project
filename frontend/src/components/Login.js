@@ -68,6 +68,14 @@ export default function Login() {
                 showAlert('User doesn’t exist');
                 navigate('/login');
             }
+            else if (response.status === 202) {
+                showAlert('Incorrect password');
+                setLoginData({
+                    ...loginData,
+                    password: ''
+                });
+                
+            }
         } catch (error) {
             setLoading(false);
             showAlert('Login failed. Please try again.');

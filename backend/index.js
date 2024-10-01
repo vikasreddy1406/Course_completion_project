@@ -16,11 +16,12 @@ app.use(cookieParser())
 const PORT = process.env.PORT
 
 import userRoutes from "./routes/userRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js"
 
 
 
 app.use('/api/user',userRoutes)
-
+app.use('/api/admin', adminRoutes);
 
 
 app.listen(PORT,()=>{
