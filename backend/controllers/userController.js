@@ -6,7 +6,7 @@ const registerUser = async (req, res) => {
 
     try {
         
-        if (!name || !email || !password || !role) {
+        if (!name || !email || !password || !role ) {
             return res.status(400).json({ message: "Some fields are missing" });
         }
 
@@ -22,6 +22,7 @@ const registerUser = async (req, res) => {
             email,
             password,
             role,
+            designation,
             performance_score: 0  
         });
 

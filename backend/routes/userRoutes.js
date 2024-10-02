@@ -10,6 +10,6 @@ router.route("/login").post(loginUser)
 router.route("/get-courses").get(verifyJWT, verifyEmployee, getAssignedCourses);
 router.route("/courses/:courseId").get(verifyJWT, verifyEmployee, getCourseDetails);
 router.route("/courses/:courseId/modules/:moduleId").patch(verifyJWT, verifyEmployee, markModuleAsCompleted);
-router.route("/courses/completion-stats").get(verifyJWT, verifyEmployee, getCourseCompletionStats);
+router.route("/stats/completion").get(verifyJWT, verifyEmployee, getCourseCompletionStats);
 
 export default router

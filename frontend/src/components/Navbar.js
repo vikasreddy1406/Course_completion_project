@@ -6,7 +6,8 @@ import { jwtDecode } from "jwt-decode";
 export default function Navbar() {
   const [link, setLink] = useState("/");
   const [role, setRole] = useState("employee"); 
-  const [name, setName] = useState(""); 
+    const [name, setName] = useState(""); 
+    const [designation, setDesignation] = useState("");
   const location = useLocation();
 
   useEffect(() => {
@@ -16,7 +17,8 @@ export default function Navbar() {
       const currentRole = decodedToken.role;
 
       setRole(currentRole);
-      setName(decodedToken.name);
+        setName(decodedToken.name);
+        setDesignation(decodedToken.designation);
 
       if (currentRole === "admin") {
         setLink("/admin");
@@ -57,7 +59,7 @@ export default function Navbar() {
               type="button"
               className="mr-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              {name} - {role[0].toUpperCase() + role.slice(1)}
+              {name} - {designation}
             </button>
             <button
               type="button"

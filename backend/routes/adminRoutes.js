@@ -9,11 +9,12 @@ import {
 } from "../controllers/courseController.js";
 import { verifyJWT, verifyAdmin } from "../middlewares/authMiddleware.js";
 import { getAllEmployees } from "../controllers/userController.js";
+import { upload } from "../middlewares/upload.js";
 
 const router = express.Router();
 
 router.route("/getAllEmployees").get(verifyJWT, verifyAdmin, getAllEmployees)
-router.route("/create-courses").post(verifyJWT, verifyAdmin, createCourse);
+router.route("/create-courses").post(verifyJWT, verifyAdmin, upload.single('image'), createCourse);
 router.route("/get-courses").get(getAllCourses);
 router.route('/courses/:courseId/update-details').put(updateCourseDetails);
 router.route("/courses/:courseId/add-modules").post(verifyJWT, verifyAdmin, addModuleToCourse);

@@ -10,14 +10,22 @@ const courseSchema = new mongoose.Schema({
     required: true,
   },
   duration: {
-    type: Number, 
+    type: Number,
   },
   modules: {
-    type: Number,  
+    type: Number,
   },
   created_at: {
     type: Date,
     default: Date.now,
+  },
+  tag: {
+    type: String,
+    enum: ['Web Development', 'Data Engineering', 'Data Science', 'Generative AI', 'DevOps', 'Cybersecurity', 'Mobile Development', 'UI/UX Design', 'Software Testing'],
+    required: true,
+  },
+  imageUrl: {
+    type: String, // URL of the uploaded image
   },
 });
 

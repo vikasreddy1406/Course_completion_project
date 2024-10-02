@@ -33,8 +33,7 @@ const CourseDetails = () => {
       await axios.patch(`http://localhost:4000/api/user/courses/${courseId}/modules/${moduleId}`, {}, {
         headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
       });
-      // Optionally refresh the modules after marking
-      const updatedModules = modules.map(mod => 
+      const updatedModules = modules.map(mod =>
         mod._id === moduleId ? { ...mod, is_completed: true } : mod
       );
       setModules(updatedModules);
@@ -50,13 +49,14 @@ const CourseDetails = () => {
   return (
     <div className="p-5">
       <h2 className="text-xl font-bold mb-4">{course.title}</h2>
-      <p>{course.description}</p>
+      <h2 className="text-lg font-bold mb-4">{course.tag}</h2>
+      <p dangerouslySetInnerHTML={{ __html: course.description }}></p> {/* Render HTML */}
       <h3 className="mt-4">Modules:</h3>
       <div className="grid grid-cols-1 gap-4">
         {modules.map(module => (
           <Card key={module._id} className="shadow-lg">
             <h5 className="text-lg font-bold">{module.module_title}</h5>
-            <p>{module.module_content}</p>
+            <p dangerouslySetInnerHTML={{ __html: module.module_content }}></p> {/* Render HTML */}
             <p>Duration: {module.module_duration} hours</p>
             {!module.is_completed ? (
               <Button className='text-black' onClick={() => markAsCompleted(module._id)}>Mark as Read</Button>
