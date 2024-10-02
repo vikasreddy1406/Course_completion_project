@@ -5,7 +5,7 @@ import {
   assignCourseToEmployee,
   getEmployeePerformance,
   getAllCourses,
-  updateCourseDetails
+  updateCourseDetails,
 } from "../controllers/courseController.js";
 import { verifyJWT, verifyAdmin } from "../middlewares/authMiddleware.js";
 import { getAllEmployees } from "../controllers/userController.js";

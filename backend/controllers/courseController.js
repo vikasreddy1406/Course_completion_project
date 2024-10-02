@@ -4,6 +4,7 @@ import { CourseAssignment } from '../models/CourseAssignment.js';
 import { User } from '../models/User.js';
 import { CourseProgress } from '../models/CourseProgress.js';
 import { ModuleProgress } from '../models/ModuleProgress.js';
+import PDFDocument from 'pdfkit';
 
 const createCourse = async (req, res) => {
   try {
@@ -303,6 +304,63 @@ const getCourseCompletionStats = async (req, res) => {
 };
 
 
+const generateCertificate = async (req, res) => {
+  const { employeeId, courseId } = req.params;
+
+  try {
+    // Fetch employee and course data
+    const employee = await User.findById(employeeId);
+    const course = await Course.findById(courseId);
+
+    // Check if employee or course exists
+    if (!employee || !course) {
+      return res.status(404).send('Employee or course not found');
+    }
+
+    // Create a new PDF document
+    const doc = new PDFDocument();
+
+    // Set the filename for the certificate
+    const filename = `${employee.name}-certificate.pdf`;
+
+    // Set headers to make it downloadable
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/pdf');
+
+    // Pipe the PDF document to the response
+    doc.pipe(res);
+
+    // Add certificate content
+    doc.fontSize(25).text('Certificate of Completion', { align: 'center' });
+
+    doc.moveDown(2);
+    doc.fontSize(18).text(`This is to certify that`, { align: 'center' });
+
+    doc.moveDown(1);
+    doc.fontSize(22).text(`${employee.name}`, { align: 'center', underline: true });
+
+    doc.moveDown(1);
+    doc.fontSize(18).text(`with the designation of ${employee.designation}`, { align: 'center' });
+
+    doc.moveDown(1);
+    doc.fontSize(18).text(`has successfully completed the course`, { align: 'center' });
+
+    doc.moveDown(1);
+    doc.fontSize(22).text(`${course.title}`, { align: 'center', underline: true });
+
+    doc.moveDown(2);
+    doc.fontSize(14).text(`Date: ${new Date().toLocaleDateString()}`, { align: 'right' });
+
+    // Finalize the PDF document
+    doc.end();
+  } catch (error) {
+    console.error('Error generating certificate:', error);
+    res.status(500).send('Server error');
+  }
+};
+
+
+
   export {
     createCourse,
     getAllCourses,
@@ -313,5 +371,6 @@ const getCourseCompletionStats = async (req, res) => {
     getAssignedCourses,
     getCourseCompletionStats,
     markModuleAsCompleted,
-    updateCourseDetails,
+  updateCourseDetails,
+  generateCertificate,
   }
