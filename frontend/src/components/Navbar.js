@@ -18,7 +18,8 @@ export default function Navbar() {
 
       setRole(currentRole);
         setName(decodedToken.name);
-        setDesignation(decodedToken.designation);
+      setDesignation(decodedToken.designation);
+      // console.log(designation)
 
       if (currentRole === "admin") {
         setLink("/admin");

@@ -111,9 +111,36 @@ const updateCourseDetails = async (req, res) => {
     }
   };
 
+//   try {
+//     const employees = await User.find({ role: 'employee' }).select('name performance_score');
+
+//     const performanceData = await Promise.all(employees.map(async (employee) => {
+//       const totalAssignedCourses = await CourseAssignment.countDocuments({ employee_id: employee._id });
+//       const completedCourses = await CourseProgress.countDocuments({
+//         employee_id: employee._id,
+//         completion_percentage: 100
+//       });
+
+//       const completionRate = totalAssignedCourses > 0
+//         ? (completedCourses / totalAssignedCourses) * 100
+//         : 0;
+
+//       return {
+//         employee: employee.name,
+//         performance_score: employee.performance_score,
+//         completion_rate: completionRate
+//       };
+//     }));
+
+//     res.status(200).json(performanceData);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error fetching performance data', error });
+//   }
+// };
+
 const getEmployeePerformance = async (req, res) => {
   try {
-    const employees = await User.find({ role: 'employee' }).select('name performance_score');
+    const employees = await User.find({ role: 'employee' }).select('name email designation performance_score');
 
     const performanceData = await Promise.all(employees.map(async (employee) => {
       const totalAssignedCourses = await CourseAssignment.countDocuments({ employee_id: employee._id });
@@ -122,14 +149,17 @@ const getEmployeePerformance = async (req, res) => {
         completion_percentage: 100
       });
 
-      const completionRate = totalAssignedCourses > 0
+      const performance_score = totalAssignedCourses > 0
         ? (completedCourses / totalAssignedCourses) * 100
         : 0;
 
       return {
         employee: employee.name,
-        performance_score: employee.performance_score,
-        completion_rate: completionRate
+        email: employee.email, 
+        designation: employee.designation, 
+        total_courses_assigned: totalAssignedCourses,
+        courses_completed: completedCourses,
+        performance_score: performance_score
       };
     }));
 
@@ -138,6 +168,7 @@ const getEmployeePerformance = async (req, res) => {
     res.status(500).json({ message: 'Error fetching performance data', error });
   }
 };
+
 
   
 const getAssignedCourses = async (req, res) => {

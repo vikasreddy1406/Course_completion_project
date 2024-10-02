@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookie from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useNavigation } from 'react-router-dom';
 import { Card, Button, Progress } from 'flowbite-react';
 import { jwtDecode } from 'jwt-decode';  
 
@@ -9,8 +10,14 @@ const Home = () => {
   const [courses, setCourses] = useState([]);
   const [completionStats, setCompletionStats] = useState({ totalCourses: 0, completedCourses: 0, completionRate: 0 });
   const [loading, setLoading] = useState(true);
+  let navigate=useNavigate()
 
   useEffect(() => {
+
+    if (!Cookie.get('accessToken')) {
+      navigate("/login");
+    }
+
     const fetchCourses = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/user/get-courses', {

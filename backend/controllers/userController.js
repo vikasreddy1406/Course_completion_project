@@ -78,7 +78,7 @@ const loginUser = async (req, res) => {
 
 const getAllEmployees = async (req, res) => {
     try {
-        const employees = await User.find({ role: 'employee' }, 'name _id');
+        const employees = await User.find({ role: 'employee' }, 'name _id designation');
         if (!employees.length) {
             return res.status(404).json({ message: 'No employees found' });
         }
