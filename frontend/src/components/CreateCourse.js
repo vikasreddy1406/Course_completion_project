@@ -182,7 +182,7 @@ const CreateCourse = () => {
 
             <div className="mb-4">
               <Label className="text-gray-600">Duration (in hours)</Label>
-              <TextInput
+              <input type='number'
                 value={moduleDuration}
                 onChange={(e) => setModuleDuration(e.target.value)}
                 className="border p-2 mt-1 w-full"

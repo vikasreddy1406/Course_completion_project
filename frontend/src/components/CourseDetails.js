@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Card, Button } from 'flowbite-react';
 
 const CourseDetails = () => {
@@ -11,6 +12,8 @@ const CourseDetails = () => {
   const [loading, setLoading] = useState(true);
   const [completionPercentage, setCompletionPercentage] = useState(0);
   const [openAccordionIndex, setOpenAccordionIndex] = useState(null); // State to manage which accordion is open
+
+  let navigate=useNavigate()
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -63,14 +66,43 @@ const CourseDetails = () => {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <Card className="mb-5 shadow-lg">
-        <h2 className="text-2xl font-bold mb-2">{course.title}</h2>
-        <h3 className="text-lg font-semibold text-gray-700 mb-3">Tag: {course.tag}</h3>
-        <p className="text-gray-600 mb-3">Total Duration: {course.total_duration} hours</p>
-        <p className="text-gray-600 mb-3">Completion Percentage: {completionPercentage.toFixed(2)}%</p>
-        <p dangerouslySetInnerHTML={{ __html: course.description }} className="text-gray-600 mb-4"></p> {/* Render HTML */}
-      </Card>
+    <div className="p-6 max-w-7xl mx-auto">
+      
+      <Card className="mb-5 shadow-lg relative"> {/* Make the card relative for absolute positioning */}
+      {/* Back Button */}
+      <button
+        className="absolute top-0 right-0 bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
+        onClick={() => navigate("/")} // Navigate to the home page
+      >
+        Back
+      </button>
+      
+      <div className='flex flex-row-reverse justify-between mt-6'> {/* Added margin-top for space between image and button */}
+        <div className='w-full'>
+          <img
+            className="rounded-t-lg h-48 w-full object-cover"
+            src={`http://localhost:4000${course.imageUrl}`}
+            alt={course.course_id?.title}
+          />
+        </div>
+        <div className='w-full'>
+          <div>
+            <h2 className="text-3xl font-bold mb-2 text-center">{course.title}</h2>
+            <h3 className="mb-4 text-lg font-semibold w-fit p-2 border-2 border-black rounded-xl">{course.tag}</h3>
+          </div>
+          <div>
+            <p className="mb-3 text-lg text-black"><span className='font-bold'>Duration:</span> {course.duration} hours</p>
+            <div className="w-[95%] bg-gray-200 rounded-full dark:bg-gray-700 mb-2">
+              <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${completionPercentage.toFixed(2)}%`}}> 
+                {completionPercentage.toFixed(2) || 0}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p className='font-bold text-lg'>About Course:</p>
+      <p dangerouslySetInnerHTML={{ __html: course.description }} className="text-gray-600 mb-4"></p> {/* Render HTML */}
+    </Card>
 
       <h3 className="text-xl font-bold mb-4">Modules:</h3>
       <div id="accordion-collapse">
@@ -83,7 +115,15 @@ const CourseDetails = () => {
                 onClick={() => toggleAccordion(index)} // Toggle accordion on click
                 aria-expanded={openAccordionIndex === index} // Set aria attribute for accessibility
               >
-                <span>{module.module_title}</span>
+                
+                <div className='flex justify-between w-full'>
+            <div className='text-left text-black font-semibold text-xl'> 
+              {module.module_title}
+            </div>
+            <div className='text-right mr-2'> 
+              {module.module_duration} hours
+            </div>
+          </div>
                 <svg
                   className={`w-3 h-3 transition-transform duration-200 ${openAccordionIndex === index ? 'rotate-180' : ''
                     }`}
@@ -101,7 +141,7 @@ const CourseDetails = () => {
               aria-labelledby={`accordion-collapse-heading-${index}`}
             >
               <p dangerouslySetInnerHTML={{ __html: module.module_content }} className="text-gray-600 mb-2"></p> {/* Render HTML */}
-              <p className="text-gray-500 mb-3">Duration: {module.module_duration} hours</p>
+              {/* <p className="text-gray-500 mb-3">Duration: {module.module_duration} hours</p> */}
               {!module.is_completed ? (
                 <Button className='bg-blue-500 text-white' onClick={() => markAsCompleted(module._id)}>Mark as Read</Button>
               ) : (

@@ -81,109 +81,84 @@ const Home = () => {
   }
 
   return (
+
     <div className="p-5">
-      <div id="performanceStats" className="border-2 mb-4 border-gray-200 dark:border-gray-600">
-        <div className="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800">
-          <h2 className="mb-4 text-xl font-bold text-center">Your Performance Stats</h2>
-          <dl className="grid grid-cols-1 gap-8 mx-auto text-gray-900 sm:grid-cols-2 lg:grid-cols-3 dark:text-white sm:p-8">
-            <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">{completionStats.completionRate.toFixed(2)}%</dt>
-              <dd className="text-gray-500 dark:text-gray-400">Performance Score</dd>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">{completionStats.totalCourses}</dt>
-              <dd className="text-gray-500 dark:text-gray-400">Total Courses Assigned</dd>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <dt className="mb-2 text-3xl font-extrabold">{completionStats.completedCourses}</dt>
-              <dd className="text-gray-500 dark:text-gray-400">Courses Completed</dd>
-            </div>
-            
-          </dl>
+  {/* Performance Stats Card */}
+  <div id="performanceStats" className="border border-gray-200 mb-6 rounded-lg shadow-md dark:border-gray-600">
+    <div className="p-6 bg-white rounded-lg md:p-8 dark:bg-gray-800">
+      <h2 className="mb-4 text-xl font-bold text-center">Your Performance Stats</h2>
+      <dl className="grid grid-cols-1 gap-6 mx-auto text-gray-900 sm:grid-cols-2 lg:grid-cols-3 dark:text-white">
+        <div className="flex flex-col items-center justify-center">
+          <dt className="mb-2 text-3xl font-extrabold">{completionStats.completionRate.toFixed(2)}%</dt>
+          <dd className="text-gray-500 dark:text-gray-400">Performance Score</dd>
         </div>
-      </div>
+        <div className="flex flex-col items-center justify-center">
+          <dt className="mb-2 text-3xl font-extrabold">{completionStats.totalCourses}</dt>
+          <dd className="text-gray-500 dark:text-gray-400">Total Courses Assigned</dd>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <dt className="mb-2 text-3xl font-extrabold">{completionStats.completedCourses}</dt>
+          <dd className="text-gray-500 dark:text-gray-400">Courses Completed</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
 
-      <h2 className="text-xl font-bold mb-4">Assigned Courses</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {courses.map((course) => (
-          // <Card key={course.course_id?._id} className="shadow-lg">
-          //   {/* Display course image */}
-          //   <img
-          //     src={`http://localhost:4000${course.course_id?.imageUrl}`}
-          //     alt={course.course_id?.title}
-          //     className="w-full h-48 object-cover mb-4"
-          //   />
-
-          //   <h5 className="text-lg font-bold">
-          //     {course.course_id?.title} - {course.course_id?.tag}
-          //   </h5>
-          //   <p dangerouslySetInnerHTML={{ __html: course.course_id?.description }}></p> {/* Render HTML */}
-          //   <p>Modules: {course.totalModules}</p>
-          //   <p>Duration: {course.course_id?.duration} hours</p>
-          //   <p>Modules Completed: {course.modulesCompleted || 0}</p>
-          //   <p>Completion Percentage: {course.completion_percentage || 0}%</p>
-
-          //   <Link to={`/courses/${course.course_id?._id}`} className="mt-3">
-          //     <Button className="text-black">View Course</Button>
-          //   </Link>
-
-          //   {/* Download Certificate button: visible only if the course is completed */}
-          //   {course.completion_percentage === 100 && (
-          //     <Button
-          //       className="mt-2 bg-green-500 text-white"
-          //       onClick={() => downloadCertificate(course.course_id?._id)}
-          //     >
-          //       Download Certificate
-          //     </Button>
-          //   )}
-          // </Card>
-          <div key={course.course_id?._id} className="max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-            {/* Display course image */}
-            <a href={`/courses/${course.course_id?._id}`}>
-              <img
-                className="rounded-t-lg h-48 w-full object-cover"
-                src={`http://localhost:4000${course.course_id?.imageUrl}`}
-                alt={course.course_id?.title}
-              />
-            </a>
-            <div className="p-5">
-              <a href={`/courses/${course.course_id?._id}`}>
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {course.course_id?.title} - {course.course_id?.tag}
-                </h5>
-              </a>
-              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400" dangerouslySetInnerHTML={{ __html: course.course_id?.description }}></p>
-              <p className="font-normal text-gray-700 dark:text-gray-400">Modules: {course.totalModules}</p>
-              <p className="font-normal text-gray-700 dark:text-gray-400">Duration: {course.course_id?.duration} hours</p>
-              <p className="font-normal text-gray-700 dark:text-gray-400">Modules Completed: {course.modulesCompleted || 0}</p>
-              <p className="font-normal text-gray-700 dark:text-gray-400">Completion Percentage: {course.completion_percentage || 0}%</p>
-
-              <div className='flex justify-between'>
-                <Link to={`/courses/${course.course_id?._id}`}>
-                  <button className="inline-flex items-center px-3 py-2 mt-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    View Course
-                    <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-                    </svg>
-                  </button>
-                </Link>
-
-                {/* Download Certificate button: visible only if the course is completed */}
-                {course.completion_percentage === 100 && (
-                  <button
-                    className="mt-2 bg-green-500 text-white inline-flex items-center px-3 py-2 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                    onClick={() => downloadCertificate(course.course_id?._id)}
-                  >
-                    Download Certificate
-                  </button>
-                )}
-              </div>
+  <h2 className="text-3xl font-bold mb-4 text-center">Assigned Courses</h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center "> {/* Adjusted gap here */}
+    {courses.map((course) => (
+      <div key={course.course_id?._id} className="w-4/5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 transition-transform transform hover:scale-105">
+        {/* Display course image */}
+        <a href={`/courses/${course.course_id?._id}`}>
+          <img
+            className="rounded-t-lg h-48 w-full object-cover"
+            src={`http://localhost:4000${course.course_id?.imageUrl}`}
+            alt={course.course_id?.title}
+          />
+        </a>
+        <div className="p-5">
+          <a href={`/courses/${course.course_id?._id}`}>
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {course.course_id?.title}
+            </h5>
+            <h6 className='mb-4 text-lg font-semibold w-fit p-2 border-2 border-black rounded-xl'>{course.course_id?.tag}</h6>
+          </a>
+          <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mb-2">
+            <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{ width: `${course.completion_percentage}%` }}>
+              {course.completion_percentage || 0}%
             </div>
           </div>
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400" dangerouslySetInnerHTML={{ __html: course.course_id?.description }}></p>
+          <p className="font-normal text-gray-700 dark:text-gray-400 my-1"><span className='font-bold'>Modules:</span> {course.totalModules}</p>
+          <p className="font-normal text-gray-700 dark:text-gray-400 my-1"><span className='font-bold'>Duration:</span> {course.course_id?.duration} hours</p>
+          <p className="font-normal text-gray-700 dark:text-gray-400 my-2"><span className='font-bold'>Modules Completed:</span> {course.modulesCompleted || 0}</p>
+          
+          <div className='flex justify-between mt-4'>
+            <Link to={`/courses/${course.course_id?._id}`}>
+              <button className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                View Course
+                <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                </svg>
+              </button>
+            </Link>
 
-        ))}
+            {/* Download Certificate button: visible only if the course is completed */}
+            {course.completion_percentage === 100 && (
+              <button
+                className="mt-2 bg-green-500 text-white inline-flex items-center px-4 py-2 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                onClick={() => downloadCertificate(course.course_id?._id)}
+              >
+                Download Certificate
+              </button>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    ))}
+  </div>
+</div>
+
   );
 };
 

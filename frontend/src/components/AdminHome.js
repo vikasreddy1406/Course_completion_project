@@ -17,6 +17,7 @@ const AdminHome = () => {
   const [showAssignCourseModal, setShowAssignCourseModal] = useState(false);
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [courseStats, setCourseStats] = useState(null);
 
   const navigate = useNavigate();
 
@@ -46,6 +47,24 @@ const AdminHome = () => {
     setPerformanceData(response.data);
   };
 
+  const fetchCourseStats = async (courseId) => {
+    if (!courseId) return;
+    try {
+      const response = await axios.get(`http://localhost:4000/api/admin/course/${courseId}/stats`, {
+        headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
+      });
+      setCourseStats(response.data);
+    } catch (error) {
+      console.error('Error fetching course stats:', error);
+    }
+  };
+
+  const handleCourseChange = (e) => {
+    const courseId = e.target.value;
+    setSelectedCourse(courseId);
+    fetchCourseStats(courseId);
+  };
+
   useEffect(() => {
     if (!Cookie.get('accessToken')) {
       navigate("/login");
@@ -54,6 +73,13 @@ const AdminHome = () => {
     fetchEmployees();
     fetchPerformanceData();
   }, []);
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      setSelectedCourse(courses[0]._id);
+      fetchCourseStats(courses[0]._id); 
+    }
+  }, [courses]);
 
   // Handle course assignment
   const handleAssignCourse = async () => {
@@ -87,6 +113,17 @@ const AdminHome = () => {
     ],
   };
 
+  const courseChartData = courseStats ? {
+    labels: ['Assigned', 'Completed'],
+    datasets: [
+      {
+        label: 'Course Stats',
+        data: [courseStats.assignedCount, courseStats.completedCount],
+        backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)'],
+      },
+    ],
+  } : null;
+
   return (
     <>
       {/* Main content container */}
@@ -104,18 +141,51 @@ const AdminHome = () => {
         </div>
 
        
-        <div className="mt-8 w-full max-w-4xl mx-auto h-96">
-          <Bar
-            data={chartData}
-            options={{
-              responsive: true,
-              maintainAspectRatio: false, // This allows the chart to resize according to the div size
-              plugins: {
-                legend: { position: 'top' },
-                title: { display: true, text: 'Employee Performance' }
-              }
-            }}
-          />
+        <div className='flex'>
+            <div className="mt-8 w-[48%] h-96">
+              <Bar
+                data={chartData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false, // This allows the chart to resize according to the div size
+                  plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Employee Performance' }
+                  }
+                }}
+              />
+            </div>
+
+
+
+            <div className='mt-8 w-[48%] h-96 flex flex-col items-center'>
+            <select
+              id="course"
+              className="bg-gray-50 border max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              onChange={handleCourseChange}  // Updated handler
+            >
+             
+              {courses.map(course => (
+                <option key={course._id} value={course._id}>{course.title} - {course.tag}</option>
+              ))}
+            </select>
+            {/* Course Stats Chart */}
+            {courseStats && (
+              <div className="mt-8 w-full max-w-4xl mx-auto h-96">
+                <Bar
+                  data={courseChartData}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: { position: 'top' },
+                      title: { display: true, text: 'Course Assignment and Completion' },
+                    },
+                  }}
+                />
+              </div>
+            )}
+            </div>
         </div>
 
 
@@ -154,7 +224,7 @@ const AdminHome = () => {
                   <td className="px-6 py-4">{data.designation}</td>
                   <td className="px-6 py-4">{data.total_courses_assigned}</td>
                   <td className="px-6 py-4">{data.courses_completed}</td>
-                  <td className="px-6 py-4">{data.performance_score}</td>
+                  <td className="px-6 py-4">{data.performance_score.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>

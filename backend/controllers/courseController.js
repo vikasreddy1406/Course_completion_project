@@ -111,32 +111,6 @@ const updateCourseDetails = async (req, res) => {
     }
   };
 
-//   try {
-//     const employees = await User.find({ role: 'employee' }).select('name performance_score');
-
-//     const performanceData = await Promise.all(employees.map(async (employee) => {
-//       const totalAssignedCourses = await CourseAssignment.countDocuments({ employee_id: employee._id });
-//       const completedCourses = await CourseProgress.countDocuments({
-//         employee_id: employee._id,
-//         completion_percentage: 100
-//       });
-
-//       const completionRate = totalAssignedCourses > 0
-//         ? (completedCourses / totalAssignedCourses) * 100
-//         : 0;
-
-//       return {
-//         employee: employee.name,
-//         performance_score: employee.performance_score,
-//         completion_rate: completionRate
-//       };
-//     }));
-
-//     res.status(200).json(performanceData);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error fetching performance data', error });
-//   }
-// };
 
 const getEmployeePerformance = async (req, res) => {
   try {
@@ -315,12 +289,28 @@ const markModuleAsCompleted = async (req, res) => {
 
 const getCourseCompletionStats = async (req, res) => {
   try {
-
     const employeeId = req.user._id;
-    const progress = await CourseProgress.find({ employee_id: employeeId });
 
-    const totalCourses = progress.length;
-    const completedCourses = progress.filter((p) => p.completion_percentage === 100).length;
+    // Fetch all courses assigned to the employee
+    const assignedCourses = await CourseAssignment.find({ employee_id: employeeId }).select('course_id');
+    const totalCourses = assignedCourses.length;
+
+    // Fetch course progress for the employee
+    const courseProgress = await CourseProgress.find({ employee_id: employeeId }).select('completion_percentage course_id');
+
+    // Map of course_id to its completion percentage for quick lookup
+    const progressMap = new Map(courseProgress.map(p => [p.course_id.toString(), p.completion_percentage]));
+
+    // Count completed and total courses
+    let completedCourses = 0;
+    assignedCourses.forEach((assignment) => {
+      const courseIdStr = assignment.course_id.toString();
+      if (progressMap.get(courseIdStr) === 100) {
+        completedCourses += 1;
+      }
+    });
+
+    // Calculate completion rate
     const completionRate = totalCourses > 0 ? (completedCourses / totalCourses) * 100 : 0;
 
     res.status(200).json({
@@ -329,7 +319,6 @@ const getCourseCompletionStats = async (req, res) => {
       completionRate,
     });
   } catch (error) {
-
     res.status(500).json({ message: 'Error fetching completion statistics', error });
   }
 };
@@ -390,6 +379,23 @@ const generateCertificate = async (req, res) => {
   }
 };
 
+const getCourseStats = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+
+    const assignedCount = await CourseAssignment.countDocuments({ course_id: courseId });
+
+    const completedCount = await CourseProgress.countDocuments({
+      course_id: courseId,
+      completion_percentage: 100,
+    });
+
+    res.status(200).json({ assignedCount, completedCount });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching course statistics', error });
+  }
+};
+
 
 
   export {
@@ -404,4 +410,5 @@ const generateCertificate = async (req, res) => {
     markModuleAsCompleted,
   updateCourseDetails,
   generateCertificate,
+  getCourseStats,
   }
