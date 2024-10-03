@@ -20,6 +20,7 @@ const AdminHome = () => {
   const [courseStats, setCourseStats] = useState(null);
   const [selectedDesignation, setSelectedDesignation] = useState('All');
   const [sortOrder, setSortOrder] = useState('Top');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
 
@@ -130,6 +131,15 @@ const AdminHome = () => {
       },
     ],
   };
+
+  const filteredSearchData = performanceData.filter((data) => {
+    const term = searchTerm.toLowerCase();
+    return (
+      data.employee.toLowerCase().includes(term) ||
+      data.email.toLowerCase().includes(term) ||
+      data.designation.toLowerCase().includes(term)
+    );
+  });
   
 
   const courseChartData = courseStats ? {
@@ -256,10 +266,19 @@ const AdminHome = () => {
             </div>
         </div>
 
-
+    <div className='flex flex-col mt-20 mx-12'>
+        <div className="flex justify-between items-center mb-4">
+        <input
+          type="text"
+          placeholder="Search by name, email, or designation"
+          className="border border-gray-300 p-2 rounded-lg w-1/3"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
         {/* Employee Performance Table */}
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-20 mx-12">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg  ">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
               <tr>
@@ -270,7 +289,7 @@ const AdminHome = () => {
                 <th scope="col" className="px-6 py-3">Performance Score</th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               {performanceData.map((data, index) => (
                 <tr
                   key={index}
@@ -278,11 +297,7 @@ const AdminHome = () => {
                 >
                   <td className="px-6 py-4">
               
-                      {/* <img
-                        className="w-10 h-10 rounded-full"
-                        src={`/images/${employee.name}.jpg`} // Assuming profile images are named after the employee
-                        alt={`${employee.name}`}
-                      /> */}
+                     
                       <div className="pl-3">
                         <div className="text-base font-semibold">{data.employee}</div>
                         <div className="font-normal text-gray-500">{data.email}</div>
@@ -295,11 +310,36 @@ const AdminHome = () => {
                   <td className="px-6 py-4">{data.performance_score.toFixed(2)}</td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> */}
+            <tbody>
+            {filteredSearchData.map((data, index) => (
+              <tr
+                key={index}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center"
+              >
+                <td className="px-6 py-4">
+                  <div className="pl-3">
+                    <div className="text-base font-semibold">{data.employee}</div>
+                    <div className="font-normal text-gray-500">{data.email}</div>
+                  </div>
+                </td>
+                <td className="px-6 py-4">{data.designation}</td>
+                <td className="px-6 py-4">{data.total_courses_assigned}</td>
+                <td className="px-6 py-4">{data.courses_completed}</td>
+                <td className="px-6 py-4">{data.performance_score.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
           </table>
         </div>
 
+        {filteredSearchData.length === 0 && (
+          <div className="text-center py-4 text-red-500">
+            No matching results found.
+          </div>
+        )}
         
+      </div>
       </div>
 
       {/* Assign Course Modal */}
