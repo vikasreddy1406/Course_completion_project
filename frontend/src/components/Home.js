@@ -109,7 +109,7 @@ const Home = () => {
   <div className='pl-16'>
   <div className="flex flex-wrap gap-20"> {/* Adjusted gap here */}
     {courses.map((course) => (
-      <div key={course.course_id?._id} className="w-[20%] h-3/5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 transition-transform transform hover:scale-105">
+      <div key={course.course_id?._id} className="w-[20%] lg:w-[28%] h-3/5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 transition-transform transform hover:scale-105">
         {/* Display course image */}
         <a href={`/courses/${course.course_id?._id}`}>
           

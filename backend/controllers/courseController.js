@@ -396,6 +396,64 @@ const getCourseStats = async (req, res) => {
   }
 };
 
+const getEmployeeCourses = async (req, res) => {
+  try {
+    // Fetch all employees
+    const employees = await User.find({ role: 'employee' }).select('_id name designation');
+
+    const employeeCourses = await Promise.all(employees.map(async (employee) => {
+      // Find the courses assigned to the employee
+      const assignments = await CourseAssignment.find({ employee_id: employee._id }).populate('course_id');
+
+      const coursesWithProgress = await Promise.all(assignments.map(async (assignment) => {
+        const totalModules = await CourseModule.countDocuments({ course_id: assignment.course_id._id });
+
+        const completedModules = await ModuleProgress.countDocuments({
+          employee_id: employee._id,
+          course_id: assignment.course_id._id,
+          is_completed: true
+        });
+
+        const courseProgress = await CourseProgress.findOne({
+          employee_id: employee._id,
+          course_id: assignment.course_id._id
+        });
+
+        const completionPercentage = courseProgress ? courseProgress.completion_percentage : 0;
+        const courseStatus = completedModules === totalModules ? 'Completed' : 'In Progress';
+
+        return {
+          course_id: assignment.course_id._id,
+          course_title: assignment.course_id.title,
+          course_tag: assignment.course_id.tag, 
+          totalModules,
+          modulesCompleted: completedModules,
+          status: courseStatus,
+          completion_percentage: completionPercentage,
+        };
+      }));
+
+      const totalCourses = coursesWithProgress.length;
+      const completedCourses = coursesWithProgress.filter(course => course.status === 'Completed').length;
+      const performanceScore = (completedCourses / totalCourses) * 100;
+
+      return {
+        employee_id: employee._id,
+        name: employee.name,
+        designation: employee.designation,
+        totalCourses,
+        completedCourses,
+        performanceScore,
+        courses: coursesWithProgress,
+      };
+    }));
+
+    res.status(200).json(employeeCourses);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching employee course details', error });
+  }
+};
+
 
 
   export {
@@ -411,4 +469,5 @@ const getCourseStats = async (req, res) => {
   updateCourseDetails,
   generateCertificate,
   getCourseStats,
+  getEmployeeCourses,
   }

@@ -6,6 +6,10 @@ import { Checkbox, Label, Modal } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Button } from 'primereact/button';
+import { Tag } from 'primereact/tag'
 
 // Register necessary components for Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -21,6 +25,8 @@ const AdminHome = () => {
   const [selectedDesignation, setSelectedDesignation] = useState('All');
   const [sortOrder, setSortOrder] = useState('Top');
   const [searchTerm, setSearchTerm] = useState('');
+
+  const [expandedRows, setExpandedRows] = useState([]);
 
   const navigate = useNavigate();
 
@@ -62,6 +68,13 @@ const AdminHome = () => {
     }
   };
 
+  const fetchEmployeeCourses = async () => {
+    const response = await axios.get('http://localhost:4000/api/admin/employee-courses', {
+      headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
+    });
+    setEmployees(response.data);
+  };
+
   const handleCourseChange = (e) => {
     const courseId = e.target.value;
     setSelectedCourse(courseId);
@@ -75,6 +88,7 @@ const AdminHome = () => {
     fetchCourses();
     fetchEmployees();
     fetchPerformanceData();
+    fetchEmployeeCourses();
   }, []);
 
   useEffect(() => {
@@ -153,6 +167,83 @@ const AdminHome = () => {
     ],
   } : null;
 
+  // const courseTemplate = (data) => {
+  //   return (
+  //     <div className="pl-3">
+  //       <table className="w-full">
+  //         <thead>
+  //           <tr>
+  //             <th>Course Name</th>
+  //             <th>Tag</th>
+  //             <th>Total Modules</th>
+  //             <th>Modules Completed</th>
+  //             <th>Status</th>
+  //             <th>Completion Percentage</th>
+  //           </tr>
+  //         </thead>
+  //         <tbody>
+  //           {data.courses.map((course, index) => (
+  //             <tr key={index}>
+  //               <td>{course.course_title}</td>
+  //               <td>{course.course_tag}</td>
+  //               <td>{course.totalModules}</td>
+  //               <td>{course.modulesCompleted}</td>
+  //               <td>{course.status}</td>
+  //               <td>{course.completion_percentage}%</td>
+  //             </tr>
+  //           ))}
+  //         </tbody>
+  //       </table>
+  //     </div>
+  //   );
+  // };
+
+  const courseTemplate = (data) => {
+    return (
+      <div className="pl-3">
+        <table className="w-full border-separate border-spacing-2">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="p-2 text-left">Course Name</th>
+              <th className="p-2 text-left">Tag</th>
+              <th className="p-2 text-left">Total Modules</th>
+              <th className="p-2 text-left">Modules Completed</th>
+              <th className="p-2 text-left">Status</th>
+              <th className="p-2 text-left">Completion Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.courses.map((course, index) => (
+              <tr key={index} className="bg-white border-b">
+                <td className="p-2">{course.course_title}</td>
+                <td className="p-2">{course.course_tag}</td>
+                <td className="p-2">{course.totalModules}</td>
+                <td className="p-2">{course.modulesCompleted}</td>
+                <td className="p-2">
+                  <Tag value={course.status} severity={getSeverity(course.status)} />
+                </td>
+                <td className="p-2">{course.completion_percentage}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  // Utility function for status severity
+  const getSeverity = (status) => {
+    switch (status) {
+      case 'Completed':
+        return 'success';
+      case 'In Progress':
+        return 'warning';
+      default:
+        return null;
+    }
+  };
+
+
   return (
     <>
       {/* Main content container */}
@@ -176,60 +267,60 @@ const AdminHome = () => {
             <div className="mt-8 w-[48%] h-[650px] border-2 rounded-md p-4  mx-4">
               
               <div className='p-5'>
-      {/* Dropdowns */}
-      <div className="flex justify-between mb-4">
-        {/* Designation Dropdown */}
-        <div>
-          <label htmlFor="designation" className="mr-2 font-bold">Designation:</label>
-          <select
-            id="designation"
-            className="border p-2 rounded"
-            value={selectedDesignation}
-            onChange={(e) => setSelectedDesignation(e.target.value)}
-          >
-            <option value="All">All</option>
-            <option value="Web Developer">Web Developer</option>
-            <option value="Data Engineer">Data Engineer</option>
-            <option value="Data Scientist">Data Scientist</option>
-            <option value="AI Specialist">AI Specialist</option>
-            <option value="DevOps Engineer">DevOps Engineer</option>
-            <option value="Cybersecurity Specialist">Cybersecurity Specialist</option>
-            <option value="Mobile Developer">Mobile Developer</option>
-            <option value="UI/UX Designer">UI/UX Designer</option>
-            <option value="Software Tester">Software Tester</option>
-          </select>
-        </div>
+                {/* Dropdowns */}
+                <div className="flex justify-between mb-4">
+                  {/* Designation Dropdown */}
+                  <div>
+                    <label htmlFor="designation" className="mr-2 font-bold">Designation:</label>
+                    <select
+                      id="designation"
+                      className="border p-2 rounded"
+                      value={selectedDesignation}
+                      onChange={(e) => setSelectedDesignation(e.target.value)}
+                    >
+                      <option value="All">All</option>
+                      <option value="Web Developer">Web Developer</option>
+                      <option value="Data Engineer">Data Engineer</option>
+                      <option value="Data Scientist">Data Scientist</option>
+                      <option value="AI Specialist">AI Specialist</option>
+                      <option value="DevOps Engineer">DevOps Engineer</option>
+                      <option value="Cybersecurity Specialist">Cybersecurity Specialist</option>
+                      <option value="Mobile Developer">Mobile Developer</option>
+                      <option value="UI/UX Designer">UI/UX Designer</option>
+                      <option value="Software Tester">Software Tester</option>
+                    </select>
+                  </div>
 
-        {/* Top/Bottom Dropdown */}
-        <div>
-          <label htmlFor="sortOrder" className="mr-2 font-bold">Sort Order:</label>
-          <select
-            id="sortOrder"
-            className="border p-2 rounded"
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-          >
-            <option value="Top">Top 5</option>
-            <option value="Bottom">Bottom 5</option>
-          </select>
-        </div>
-      </div>
+                  {/* Top/Bottom Dropdown */}
+                  <div>
+                    <label htmlFor="sortOrder" className="mr-2 font-bold">Sort Order:</label>
+                    <select
+                      id="sortOrder"
+                      className="border p-2 rounded"
+                      value={sortOrder}
+                      onChange={(e) => setSortOrder(e.target.value)}
+                    >
+                      <option value="Top">Top 5</option>
+                      <option value="Bottom">Bottom 5</option>
+                    </select>
+                  </div>
+                </div>
 
-      {/* Performance Chart */}
-      <div className="mt-8 w-full h-[500px] border-2 rounded-md p-4">
-        <Bar
-          data={chartData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { position: 'top' },
-              title: { display: true, text: 'Employee Performance' }
-            },
-          }}
-        />
-      </div>
-    </div>
+                {/* Performance Chart */}
+                <div className="mt-8 w-full h-[500px] border-2 rounded-md p-4">
+                  <Bar
+                    data={chartData}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Employee Performance' }
+                      },
+                    }}
+                  />
+                </div>
+              </div>
             </div>
 
 
@@ -289,28 +380,7 @@ const AdminHome = () => {
                 <th scope="col" className="px-6 py-3">Performance Score</th>
               </tr>
             </thead>
-            {/* <tbody>
-              {performanceData.map((data, index) => (
-                <tr
-                  key={index}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center"
-                >
-                  <td className="px-6 py-4">
-              
-                     
-                      <div className="pl-3">
-                        <div className="text-base font-semibold">{data.employee}</div>
-                        <div className="font-normal text-gray-500">{data.email}</div>
-                      </div>
-                    
-                  </td>
-                  <td className="px-6 py-4">{data.designation}</td>
-                  <td className="px-6 py-4">{data.total_courses_assigned}</td>
-                  <td className="px-6 py-4">{data.courses_completed}</td>
-                  <td className="px-6 py-4">{data.performance_score.toFixed(2)}</td>
-                </tr>
-              ))}
-            </tbody> */}
+            
             <tbody>
             {filteredSearchData.map((data, index) => (
               <tr
@@ -341,6 +411,36 @@ const AdminHome = () => {
         
       </div>
       </div>
+
+      {/* <div className="card">
+        <DataTable value={employees} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
+          rowExpansionTemplate={courseTemplate} dataKey="employee_id">
+
+          <Column expander style={{ width: '3em' }} />
+          <Column field="name" header="Employee Name" />
+          <Column field="designation" header="Designation" />
+          <Column field="totalCourses" header="Total Courses" />
+          <Column field="completedCourses" header="Courses Completed" />
+          <Column field="performanceScore" header="Performance Score" body={(rowData) => rowData.performanceScore?.toFixed(2)} />
+
+        </DataTable>
+      </div> */}
+
+      <div className="card">
+        <DataTable value={employees} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
+          rowExpansionTemplate={courseTemplate} dataKey="employee_id"
+          tableStyle={{ minWidth: '60rem' }} className="shadow-md">
+
+          <Column expander style={{ width: '3em' }} />
+          <Column field="name" header="Employee Name" className="p-2" style={{ width: '20%' }} />
+          <Column field="designation" header="Designation" className="p-2" style={{ width: '15%' }} />
+          <Column field="totalCourses" header="Total Courses" className="p-2" style={{ width: '10%' }} />
+          <Column field="completedCourses" header="Courses Completed" className="p-2" style={{ width: '10%' }} />
+          <Column field="performanceScore" header="Performance Score" className="p-2" style={{ width: '15%' }}
+            body={(rowData) => rowData.performanceScore?.toFixed(2)} />
+        </DataTable>
+      </div>
+
 
       {/* Assign Course Modal */}
       {showAssignCourseModal && (

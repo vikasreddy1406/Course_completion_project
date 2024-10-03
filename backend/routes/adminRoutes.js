@@ -7,6 +7,7 @@ import {
   getAllCourses,
   updateCourseDetails,
   getCourseStats,
+  getEmployeeCourses,
 } from "../controllers/courseController.js";
 import { verifyJWT, verifyAdmin } from "../middlewares/authMiddleware.js";
 import { getAllEmployees } from "../controllers/userController.js";
@@ -22,5 +23,6 @@ router.route("/courses/:courseId/add-modules").post(verifyJWT, verifyAdmin, addM
 router.route("/courses/:courseId/assign").post(verifyJWT, verifyAdmin, assignCourseToEmployee);
 router.route("/performance").get(verifyJWT, verifyAdmin, getEmployeePerformance);
 router.route("/course/:courseId/stats").get(verifyJWT, verifyAdmin, getCourseStats)
+router.route("/employee-courses").get(verifyJWT, verifyAdmin, getEmployeeCourses);
 
 export default router;
