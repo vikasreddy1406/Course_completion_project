@@ -18,6 +18,8 @@ const AdminHome = () => {
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [courseStats, setCourseStats] = useState(null);
+  const [selectedDesignation, setSelectedDesignation] = useState('All');
+  const [sortOrder, setSortOrder] = useState('Top');
 
   const navigate = useNavigate();
 
@@ -81,6 +83,23 @@ const AdminHome = () => {
     }
   }, [courses]);
 
+  const getFilteredData = () => {
+    let filteredData = performanceData;
+
+    // Filter by designation if selected
+    if (selectedDesignation !== 'All') {
+      filteredData = filteredData.filter(emp => emp.designation === selectedDesignation);
+    }
+
+    // Sort by performance score (ascending or descending based on sortOrder)
+    filteredData.sort((a, b) => {
+      return sortOrder === 'Top' ? b.performance_score - a.performance_score : a.performance_score - b.performance_score;
+    });
+
+    // Return top 5 or bottom 5
+    return filteredData.slice(0, 5);
+  };
+
   // Handle course assignment
   const handleAssignCourse = async () => {
     if (!selectedCourse || selectedEmployees.length === 0) return;
@@ -100,18 +119,18 @@ const AdminHome = () => {
     }
   };
 
-  // Prepare performance data for Chart.js
+  const filteredData = getFilteredData();
   const chartData = {
-    labels: performanceData.map(emp => emp.employee),
+    labels: filteredData.map(emp => emp.employee),
     datasets: [
       {
         label: 'Performance Score',
-        data: performanceData.map(emp => emp.performance_score),
+        data: filteredData.map(emp => emp.performance_score),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
       },
-      
     ],
   };
+  
 
   const courseChartData = courseStats ? {
     labels: ['Assigned', 'Completed'],
@@ -128,50 +147,99 @@ const AdminHome = () => {
     <>
       {/* Main content container */}
       <div className={`p-5 ${showAssignCourseModal ? 'blur-sm opacity-50' : ''}`}>
-        <div className='flex justify-start gap-5'>
-          <h1 className="text-3xl font-bold mb-5 text-center">Admin Dashboard</h1>
+        <div>
+          <h1 className="text-3xl font-bold mb-5 text-center uppercase">Admin Dashboard</h1>
           <div className='flex '>
-            <button type='button' onClick={() => navigate('/create-course')} className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+            <button type='button' onClick={() => navigate('/create-course')} className="text-white bg-[#0369a1] focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
               Create Course
             </button>
-            <button type='button' onClick={() => setShowAssignCourseModal(true)} className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ml-2 mb-2">
+            <button type='button' onClick={() => setShowAssignCourseModal(true)} className="text-white bg-[#0369a1] focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ml-2 mb-2">
               Assign Courses
             </button>
           </div>
         </div>
 
+        
+
        
-        <div className='flex'>
-            <div className="mt-8 w-[48%] h-96">
-              <Bar
-                data={chartData}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false, // This allows the chart to resize according to the div size
-                  plugins: {
-                    legend: { position: 'top' },
-                    title: { display: true, text: 'Employee Performance' }
-                  }
-                }}
-              />
+        <div className='flex justify-between'>
+            <div className="mt-8 w-[48%] h-[650px] border-2 rounded-md p-4  mx-4">
+              
+              <div className='p-5'>
+      {/* Dropdowns */}
+      <div className="flex justify-between mb-4">
+        {/* Designation Dropdown */}
+        <div>
+          <label htmlFor="designation" className="mr-2 font-bold">Designation:</label>
+          <select
+            id="designation"
+            className="border p-2 rounded"
+            value={selectedDesignation}
+            onChange={(e) => setSelectedDesignation(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Web Developer">Web Developer</option>
+            <option value="Data Engineer">Data Engineer</option>
+            <option value="Data Scientist">Data Scientist</option>
+            <option value="AI Specialist">AI Specialist</option>
+            <option value="DevOps Engineer">DevOps Engineer</option>
+            <option value="Cybersecurity Specialist">Cybersecurity Specialist</option>
+            <option value="Mobile Developer">Mobile Developer</option>
+            <option value="UI/UX Designer">UI/UX Designer</option>
+            <option value="Software Tester">Software Tester</option>
+          </select>
+        </div>
+
+        {/* Top/Bottom Dropdown */}
+        <div>
+          <label htmlFor="sortOrder" className="mr-2 font-bold">Sort Order:</label>
+          <select
+            id="sortOrder"
+            className="border p-2 rounded"
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+          >
+            <option value="Top">Top 5</option>
+            <option value="Bottom">Bottom 5</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Performance Chart */}
+      <div className="mt-8 w-full h-[500px] border-2 rounded-md p-4">
+        <Bar
+          data={chartData}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top' },
+              title: { display: true, text: 'Employee Performance' }
+            },
+          }}
+        />
+      </div>
+    </div>
             </div>
 
 
 
-            <div className='mt-8 w-[48%] h-96 flex flex-col items-center'>
-            <select
-              id="course"
-              className="bg-gray-50 border max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              onChange={handleCourseChange}  // Updated handler
-            >
-             
-              {courses.map(course => (
-                <option key={course._id} value={course._id}>{course.title} - {course.tag}</option>
-              ))}
-            </select>
+            <div className='mt-8 w-[48%] h-[650px] flex flex-col items-center border-2 rounded-md p-4  mx-4'>
+            <div className='flex'>
+              <label  className="mr-2 w-1/2 mt-2 font-bold">Select Course:</label>
+              <select
+                id="course"
+                className="bg-gray-50 border max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                onChange={handleCourseChange}  // Updated handler
+              >
+                {courses.map(course => (
+                  <option key={course._id} value={course._id}>{course.title} - {course.tag}</option>
+                ))}
+              </select>
+            </div>
             {/* Course Stats Chart */}
             {courseStats && (
-              <div className="mt-8 w-full max-w-4xl mx-auto h-96">
+              <div className="mt-8 w-full max-w-4xl mx-auto h-96 ">
                 <Bar
                   data={courseChartData}
                   options={{
@@ -191,7 +259,7 @@ const AdminHome = () => {
 
 
         {/* Employee Performance Table */}
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-20">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-20 mx-12">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
               <tr>

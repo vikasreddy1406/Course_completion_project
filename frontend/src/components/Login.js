@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { alertContext } from '../context/alertContext';
 import axios from 'axios';
 import LoadingUi from './LoadingUi';
@@ -88,7 +88,8 @@ export default function Login() {
             <LoadingUi />
         ) : (
             <div className="flex items-center justify-center h-screen"
-                style={{ background: 'linear-gradient(#CCD5AE, #E0E5B6, #FAEDCE)' }}>
+                 style={{ background: 'linear-gradient(#dcdee0, #9198e5)' }}
+                >
                 <form className="w-md mx-auto bg-white p-8 rounded-lg shadow-md w-96" onSubmit={handleSubmitClick}>
                     <p className="text-3xl text-pink-600 dark:text-white text-center pb-8  font-semibold">
                         Login
@@ -138,16 +139,10 @@ export default function Login() {
                         </button>
                     </div>
                     <p className="text-lg mb-4 text-gray-900 dark:text-white text-center">
-                        New here? Create an Account
+                        New here? <Link className='text-blue-800 hover:underline' onClick={handleSignupClick}>Create an Account</Link> 
                     </p>
                     <div className="flex justify-center">
-                        <button
-                            onClick={handleSignupClick}
-                            type="button"
-                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                            Signup
-                        </button>
+                        
                     </div>
                 </form>
             </div>

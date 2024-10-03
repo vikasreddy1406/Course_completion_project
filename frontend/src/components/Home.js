@@ -6,7 +6,8 @@ import { Link, useNavigation } from 'react-router-dom';
 import { Card, Button, Progress } from 'flowbite-react';
 import { jwtDecode } from 'jwt-decode';
 import { alertContext } from '../context/alertContext';
-import LoadingUi from "./LoadingUi";  
+import LoadingUi from "./LoadingUi"; 
+import img from "../../src/assests/man.jpg" 
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -84,37 +85,40 @@ const Home = () => {
 
     <div className="p-5">
   {/* Performance Stats Card */}
-  <div id="performanceStats" className="border border-gray-200 mb-6 rounded-lg shadow-md dark:border-gray-600">
-    <div className="p-6 bg-white rounded-lg md:p-8 dark:bg-gray-800">
-      <h2 className="mb-4 text-xl font-bold text-center">Your Performance Stats</h2>
+      <h2 className="mb-4 text-3xl font-bold text-center">Performance Stats</h2>
+  <div id="performanceStats" className=" mb-6 rounded-lg  ">
+    <div className="p-6 mx-80 bg-white rounded-lg md:p-8 dark:bg-gray-800">
       <dl className="grid grid-cols-1 gap-6 mx-auto text-gray-900 sm:grid-cols-2 lg:grid-cols-3 dark:text-white">
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex gap-4 rounded-lg bg-[#0369a1] text-white h-52 flex-col items-center justify-center">
           <dt className="mb-2 text-3xl font-extrabold">{completionStats.completionRate.toFixed(2)}%</dt>
-          <dd className="text-gray-500 dark:text-gray-400">Performance Score</dd>
+          <dd className="text-xl">Performance Score</dd>
         </div>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex gap-4 rounded-lg bg-[#0369a1] text-white flex-col items-center justify-center">
           <dt className="mb-2 text-3xl font-extrabold">{completionStats.totalCourses}</dt>
-          <dd className="text-gray-500 dark:text-gray-400">Total Courses Assigned</dd>
+          <dd className="text-xl">Total Courses Assigned</dd>
         </div>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex gap-4 rounded-lg bg-[#0369a1] text-white flex-col items-center justify-center">
           <dt className="mb-2 text-3xl font-extrabold">{completionStats.completedCourses}</dt>
-          <dd className="text-gray-500 dark:text-gray-400">Courses Completed</dd>
+          <dd className="text-xl">Courses Completed</dd>
         </div>
       </dl>
     </div>
   </div>
 
-  <h2 className="text-3xl font-bold mb-4 text-center">Assigned Courses</h2>
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center "> {/* Adjusted gap here */}
+  <h2 className="text-3xl font-bold mb-4 text-center ">Assigned Courses</h2>
+  <div className='pl-16'>
+  <div className="flex flex-wrap gap-20"> {/* Adjusted gap here */}
     {courses.map((course) => (
-      <div key={course.course_id?._id} className="w-4/5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 transition-transform transform hover:scale-105">
+      <div key={course.course_id?._id} className="w-[20%] h-3/5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 transition-transform transform hover:scale-105">
         {/* Display course image */}
         <a href={`/courses/${course.course_id?._id}`}>
+          
           <img
-            className="rounded-t-lg h-48 w-full object-cover"
-            src={`http://localhost:4000${course.course_id?.imageUrl}`}
-            alt={course.course_id?.title}
+            className="rounded-t-lg h-44 w-full object-cover"
+            src={course.course_id?.imageUrl ? `http://localhost:4000${course.course_id?.imageUrl}` : img}
+            alt={course.course_id?.title || 'Placeholder image'}
           />
+
         </a>
         <div className="p-5">
           <a href={`/courses/${course.course_id?._id}`}>
@@ -128,7 +132,13 @@ const Home = () => {
               {course.completion_percentage || 0}%
             </div>
           </div>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400" dangerouslySetInnerHTML={{ __html: course.course_id?.description }}></p>
+          {/* <p className="mb-3 font-normal text-gray-700 dark:text-gray-400" dangerouslySetInnerHTML={{ __html: course.course_id?.description }}></p> */}
+          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            <span dangerouslySetInnerHTML={{ __html: course.course_id?.description.slice(0, 50) }} />
+            {course.course_id?.description.length > 50 ? '...' : ''}
+          </p>
+
+
           <p className="font-normal text-gray-700 dark:text-gray-400 my-1"><span className='font-bold'>Modules:</span> {course.totalModules}</p>
           <p className="font-normal text-gray-700 dark:text-gray-400 my-1"><span className='font-bold'>Duration:</span> {course.course_id?.duration} hours</p>
           <p className="font-normal text-gray-700 dark:text-gray-400 my-2"><span className='font-bold'>Modules Completed:</span> {course.modulesCompleted || 0}</p>
@@ -157,6 +167,8 @@ const Home = () => {
       </div>
     ))}
   </div>
+  </div>
+  
 </div>
 
   );

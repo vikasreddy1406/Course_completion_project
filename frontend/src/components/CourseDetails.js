@@ -4,6 +4,9 @@ import Cookie from 'js-cookie';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Card, Button } from 'flowbite-react';
+import { IoReturnDownBack } from "react-icons/io5";
+import img from "../../src/assests/man.jpg" 
+
 
 const CourseDetails = () => {
   const { courseId } = useParams();
@@ -71,18 +74,19 @@ const CourseDetails = () => {
       <Card className="mb-5 shadow-lg relative"> {/* Make the card relative for absolute positioning */}
       {/* Back Button */}
       <button
-        className="absolute top-0 right-0 bg-red-500 text-white p-2 rounded-lg hover:bg-red-600"
+        className="absolute top-3 right-3 bg-red-500 text-xl text-white p-2 rounded-sm hover:bg-red-600"
         onClick={() => navigate("/")} // Navigate to the home page
       >
-        Back
+        <IoReturnDownBack />
       </button>
       
       <div className='flex flex-row-reverse justify-between mt-6'> {/* Added margin-top for space between image and button */}
         <div className='w-full'>
+          
           <img
-            className="rounded-t-lg h-48 w-full object-cover"
-            src={`http://localhost:4000${course.imageUrl}`}
-            alt={course.course_id?.title}
+            className="rounded-t-lg h-64 mt-8 w-full object-cover"
+            src={course.imageUrl ? `http://localhost:4000${course?.imageUrl}` : img}
+            alt={course.title || 'Placeholder image'}
           />
         </div>
         <div className='w-full'>
@@ -93,16 +97,18 @@ const CourseDetails = () => {
           <div>
             <p className="mb-3 text-lg text-black"><span className='font-bold'>Duration:</span> {course.duration} hours</p>
             <div className="w-[95%] bg-gray-200 rounded-full dark:bg-gray-700 mb-2">
-              <div className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${completionPercentage.toFixed(2)}%`}}> 
+              <div className="bg-blue-600  text-lg pt-1 h-8 font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style={{width: `${completionPercentage.toFixed(2)}%`}}> 
                 {completionPercentage.toFixed(2) || 0}%
               </div>
+              
             </div>
+            <p className='font-bold text-lg'>About Course:</p>
+      <p dangerouslySetInnerHTML={{ __html: course.description }} className="text-gray-600 mb-4"></p> {/* Render HTML */}
+   
           </div>
         </div>
       </div>
-      <p className='font-bold text-lg'>About Course:</p>
-      <p dangerouslySetInnerHTML={{ __html: course.description }} className="text-gray-600 mb-4"></p> {/* Render HTML */}
-    </Card>
+       </Card>
 
       <h3 className="text-xl font-bold mb-4">Modules:</h3>
       <div id="accordion-collapse">
@@ -111,7 +117,7 @@ const CourseDetails = () => {
             <h2>
               <button
                 type="button"
-                className="flex items-center justify-between w-full p-5 font-medium text-gray-500 border border-b-0 border-gray-200 rounded-t-xl hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
+                className="flex items-center justify-between w-full p-5 font-medium text-gray-500 border-2  border-gray-200 rounded-t-xl hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
                 onClick={() => toggleAccordion(index)} // Toggle accordion on click
                 aria-expanded={openAccordionIndex === index} // Set aria attribute for accessibility
               >
@@ -137,7 +143,7 @@ const CourseDetails = () => {
               </button>
             </h2>
             <div
-              className={`p-5 border border-b-0 border-gray-200 ${openAccordionIndex === index ? '' : 'hidden'}`} // Show/hide content based on state
+              className={`p-5 border-2  border-gray-200 ${openAccordionIndex === index ? '' : 'hidden'}`} // Show/hide content based on state
               aria-labelledby={`accordion-collapse-heading-${index}`}
             >
               <p dangerouslySetInnerHTML={{ __html: module.module_content }} className="text-gray-600 mb-2"></p> {/* Render HTML */}

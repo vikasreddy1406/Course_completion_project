@@ -40,8 +40,8 @@ export default function Navbar() {
 
   return (
     <div className="mb-32 sm:mb-20 dark">
-      <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <nav className="bg-white dark:bg-[#0369a1] fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+        <div className="justify-between flex flex-wrap mx-auto p-4">
           <Link
             to={link}
             className="flex items-center space-x-3 rtl:space-x-reverse"
@@ -55,10 +55,10 @@ export default function Navbar() {
               JLearn
             </span>
           </Link>
-          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse bg-transparent">
             <button
               type="button"
-              className="mr-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="mr-4 text-[#0369a1] bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-white  dark:focus:ring-white"
             >
               {name} - {designation}
             </button>
@@ -74,11 +74,11 @@ export default function Navbar() {
             className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
             id="navbar-sticky"
           >
-            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-transparent md:dark:bg-transparent dark:border-gray-700">
               <li>
                 <Link
                   to={link}
-                  className={`block py-2 px-3 rounded md:p-0 ${location.pathname === link ? "text-blue-700" : "text-gray-900 dark:text-white"}`}
+                  className={`block py-2 text-xl px-3 rounded md:p-0 ${location.pathname === link ? "text-black" : "text-gray-900 dark:text-white"}`}
                   aria-current="page"
                 >
                   Home
@@ -87,7 +87,7 @@ export default function Navbar() {
               <li>
                 <Link
                   to="/contact"
-                  className={`block py-2 px-3 rounded md:p-0 ${location.pathname === "/contact" ? "text-blue-700" : "text-gray-900 dark:text-white"}`}
+                  className={`block py-2 text-xl px-3 rounded md:p-0 ${location.pathname === "/contact" ? "text-black" : "text-gray-900 dark:text-white"}`}
                 >
                   Contact
                 </Link>

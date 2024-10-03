@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { alertContext } from "../context/alertContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoadingUi from "./LoadingUi";
 
@@ -73,9 +73,7 @@ export default function Signup() {
         loading ? <LoadingUi /> : (
             <div
                 className="flex items-center justify-center h-screen"
-                style={{
-                    background: "linear-gradient(#CCD5AE, #E0E5B6, #FAEDCE)",
-                }}
+                style={{ background: 'linear-gradient(#dcdee0, #9198e5)' }}
             >
                 <form
                     className="w-md mx-auto bg-white p-8 rounded-lg shadow-md w-96"
@@ -205,8 +203,8 @@ export default function Signup() {
                             Signup
                         </button>
                     </div>
-                    <p className="text-blue-500 cursor-pointer text-center underline" onClick={handleLoginClick}>
-                        Go to Login
+                    <p className=" cursor-pointer text-center " >
+                        Already an user? <Link onClick={handleLoginClick} className="text-blue-700 hover:underline">Login</Link>
                     </p>
                 </form>
             </div>

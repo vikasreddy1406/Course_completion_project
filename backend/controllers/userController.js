@@ -2,7 +2,7 @@ import { User } from "../models/User.js"
 
 
 const registerUser = async (req, res) => {
-    const { name, email, password,role} = req.body;  
+    const { name, email, password,role,designation} = req.body;  
 
     try {
         
