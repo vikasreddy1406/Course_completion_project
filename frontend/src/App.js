@@ -12,6 +12,8 @@ import AdminHome from "./components/AdminHome.js";
 import Contact from "./components/Contact.js";
 import CreateCourse from "./components/CreateCourse.js";
 import CourseDetails from "./components/CourseDetails.js";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+
 
 
 function App() {

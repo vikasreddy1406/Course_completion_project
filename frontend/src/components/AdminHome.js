@@ -10,6 +10,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag'
+import EmployeePerformance from './EmployeePerformance';
 
 // Register necessary components for Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -98,6 +99,8 @@ const AdminHome = () => {
     }
   }, [courses]);
 
+  
+
   const getFilteredData = () => {
     let filteredData = performanceData;
 
@@ -167,36 +170,29 @@ const AdminHome = () => {
     ],
   } : null;
 
-  // const courseTemplate = (data) => {
-  //   return (
-  //     <div className="pl-3">
-  //       <table className="w-full">
-  //         <thead>
-  //           <tr>
-  //             <th>Course Name</th>
-  //             <th>Tag</th>
-  //             <th>Total Modules</th>
-  //             <th>Modules Completed</th>
-  //             <th>Status</th>
-  //             <th>Completion Percentage</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {data.courses.map((course, index) => (
-  //             <tr key={index}>
-  //               <td>{course.course_title}</td>
-  //               <td>{course.course_tag}</td>
-  //               <td>{course.totalModules}</td>
-  //               <td>{course.modulesCompleted}</td>
-  //               <td>{course.status}</td>
-  //               <td>{course.completion_percentage}%</td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   );
-  // };
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      datalabels: {
+        display: true,
+        color: 'white',  
+        anchor: 'center', 
+        align: 'center',  
+        formatter: (value) => `${value.toFixed(2)}%`,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value) {
+            return value + "%"; 
+          }
+        }
+      }
+    }
+  };
+
 
   const courseTemplate = (data) => {
     return (
@@ -204,25 +200,25 @@ const AdminHome = () => {
         <table className="w-full border-separate border-spacing-2">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-2 text-left">Course Name</th>
-              <th className="p-2 text-left">Tag</th>
-              <th className="p-2 text-left">Total Modules</th>
-              <th className="p-2 text-left">Modules Completed</th>
-              <th className="p-2 text-left">Status</th>
-              <th className="p-2 text-left">Completion Percentage</th>
+              <th className="p-2 text-center">Course Name</th>
+              <th className="p-2 text-center">Tag</th>
+              <th className="p-2 text-center">Total Modules</th>
+              <th className="p-2 text-center">Modules Completed</th>
+              <th className="p-2 text-center">Status</th>
+              <th className="p-2 text-center">Completion Percentage</th>
             </tr>
           </thead>
           <tbody>
             {data.courses.map((course, index) => (
               <tr key={index} className="bg-white border-b">
-                <td className="p-2">{course.course_title}</td>
-                <td className="p-2">{course.course_tag}</td>
-                <td className="p-2">{course.totalModules}</td>
-                <td className="p-2">{course.modulesCompleted}</td>
-                <td className="p-2">
+                <td className="p-2 text-center">{course.course_title}</td>
+                <td className="p-2 text-center">{course.course_tag}</td>
+                <td className="p-2 text-center">{course.totalModules}</td>
+                <td className="p-2 text-center">{course.modulesCompleted}</td>
+                <td className="p-2 text-center">
                   <Tag value={course.status} severity={getSeverity(course.status)} />
                 </td>
-                <td className="p-2">{course.completion_percentage}%</td>
+                <td className="p-2 text-center">{course.completion_percentage}%</td>
               </tr>
             ))}
           </tbody>
@@ -246,8 +242,10 @@ const AdminHome = () => {
 
   return (
     <>
+
+
       {/* Main content container */}
-      <div className={`p-5 ${showAssignCourseModal ? 'blur-sm opacity-50' : ''}`}>
+      <div className={`p-5 ${showAssignCourseModal ? 'blur-sm opacity-50' : ''} `}>
         <div>
           <h1 className="text-3xl font-bold mb-5 text-center uppercase">Admin Dashboard</h1>
           <div className='flex '>
@@ -264,10 +262,11 @@ const AdminHome = () => {
 
        
         <div className='flex justify-between'>
-            <div className="mt-8 w-[48%] h-[650px] border-2 rounded-md p-4  mx-4">
+            <div className="mt-8 w-[48%] h-[670px] border-2 rounded-md p-4  mx-4">
               
               <div className='p-5'>
                 {/* Dropdowns */}
+                <h1 className='text-center text-2xl font-bold mb-4'>Performance Rate of Employees</h1>
                 <div className="flex justify-between mb-4">
                   {/* Designation Dropdown */}
                   <div>
@@ -310,14 +309,7 @@ const AdminHome = () => {
                 <div className="mt-8 w-full h-[500px] border-2 rounded-md p-4">
                   <Bar
                     data={chartData}
-                    options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      plugins: {
-                        legend: { position: 'top' },
-                        title: { display: true, text: 'Employee Performance' }
-                      },
-                    }}
+                    options={{chartOptions}}
                   />
                 </div>
               </div>
@@ -325,7 +317,8 @@ const AdminHome = () => {
 
 
 
-            <div className='mt-8 w-[48%] h-[650px] flex flex-col items-center border-2 rounded-md p-4  mx-4'>
+            <div className='mt-8 w-[48%] h-[670px] flex flex-col items-center border-2 rounded-md p-4  mx-4'>
+            <h1 className='text-center text-2xl font-bold mb-4'>Completion Rate of Courses</h1>
             <div className='flex'>
               <label  className="mr-2 w-1/2 mt-2 font-bold">Select Course:</label>
               <select
@@ -343,101 +336,32 @@ const AdminHome = () => {
               <div className="mt-8 w-full max-w-4xl mx-auto h-96 ">
                 <Bar
                   data={courseChartData}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                      legend: { position: 'top' },
-                      title: { display: true, text: 'Course Assignment and Completion' },
-                    },
-                  }}
+                  options={{chartOptions}}
                 />
               </div>
             )}
             </div>
-        </div>
-
-    <div className='flex flex-col mt-20 mx-12'>
-        <div className="flex justify-between items-center mb-4">
-        <input
-          type="text"
-          placeholder="Search by name, email, or designation"
-          className="border border-gray-300 p-2 rounded-lg w-1/3"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        </div>    
       </div>
 
-        {/* Employee Performance Table */}
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg  ">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
-              <tr>
-                <th scope="col" className="px-6 py-3">Name</th>
-                <th scope="col" className="px-6 py-3">Designation</th>
-                <th scope="col" className="px-6 py-3">Total Courses Assigned</th>
-                <th scope="col" className="px-6 py-3">Courses Completed</th>
-                <th scope="col" className="px-6 py-3">Performance Score</th>
-              </tr>
-            </thead>
-            
-            <tbody>
-            {filteredSearchData.map((data, index) => (
-              <tr
-                key={index}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center"
-              >
-                <td className="px-6 py-4">
-                  <div className="pl-3">
-                    <div className="text-base font-semibold">{data.employee}</div>
-                    <div className="font-normal text-gray-500">{data.email}</div>
-                  </div>
-                </td>
-                <td className="px-6 py-4">{data.designation}</td>
-                <td className="px-6 py-4">{data.total_courses_assigned}</td>
-                <td className="px-6 py-4">{data.courses_completed}</td>
-                <td className="px-6 py-4">{data.performance_score.toFixed(2)}</td>
-              </tr>
-            ))}
-          </tbody>
-          </table>
-        </div>
-
-        {filteredSearchData.length === 0 && (
-          <div className="text-center py-4 text-red-500">
-            No matching results found.
-          </div>
-        )}
-        
+      <div>
+        <EmployeePerformance/>
       </div>
-      </div>
+  
 
-      {/* <div className="card">
-        <DataTable value={employees} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
-          rowExpansionTemplate={courseTemplate} dataKey="employee_id">
-
-          <Column expander style={{ width: '3em' }} />
-          <Column field="name" header="Employee Name" />
-          <Column field="designation" header="Designation" />
-          <Column field="totalCourses" header="Total Courses" />
-          <Column field="completedCourses" header="Courses Completed" />
-          <Column field="performanceScore" header="Performance Score" body={(rowData) => rowData.performanceScore?.toFixed(2)} />
-
-        </DataTable>
-      </div> */}
-
-      <div className="card">
+      <div className="card border-2 mx-8 mb-8">
+      <h1 className='text-center text-2xl font-bold my-4'>Employee Course Details Table</h1>
         <DataTable value={employees} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
           rowExpansionTemplate={courseTemplate} dataKey="employee_id"
-          tableStyle={{ minWidth: '60rem' }} className="shadow-md">
+          tableStyle={{ minWidth: '60rem' }} className="shadow-md text-center">
 
           <Column expander style={{ width: '3em' }} />
-          <Column field="name" header="Employee Name" className="p-2" style={{ width: '20%' }} />
-          <Column field="designation" header="Designation" className="p-2" style={{ width: '15%' }} />
-          <Column field="totalCourses" header="Total Courses" className="p-2" style={{ width: '10%' }} />
-          <Column field="completedCourses" header="Courses Completed" className="p-2" style={{ width: '10%' }} />
-          <Column field="performanceScore" header="Performance Score" className="p-2" style={{ width: '15%' }}
-            body={(rowData) => rowData.performanceScore?.toFixed(2)} />
+          <Column field="name" header="Employee Name" className="p-2 text-center" style={{ width: '20%' }} alignHeader={'center'} sortable />
+          <Column field="designation" header="Designation" className="p-2 text-center" style={{ width: '20%' }} alignHeader={'center'} sortable />
+          <Column field="totalCourses" header="Total Courses" className="p-2 text-center" style={{ width: '20%' }} alignHeader={'center'} sortable/>
+          <Column field="completedCourses" header="Courses Completed" className="p-2 text-center" style={{ width: '20%' }} alignHeader={'center'} sortable />
+          <Column sortable field="performanceScore" header="Performance Score" className="p-2 text-center" style={{ width: '20%' }}
+            body={(rowData) => rowData.performanceScore?.toFixed(2)} alignHeader={'center'}/>
         </DataTable>
       </div>
 
