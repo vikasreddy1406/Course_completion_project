@@ -20,7 +20,7 @@ router.route("/create-courses").post(verifyJWT, verifyAdmin, upload.single('imag
 router.route("/get-courses").get(getAllCourses);
 router.route('/courses/:courseId/update-details').put(updateCourseDetails);
 router.route("/courses/:courseId/add-modules").post(verifyJWT, verifyAdmin, addModuleToCourse);
-router.route("/courses/:courseId/assign").post(verifyJWT, verifyAdmin, assignCourseToEmployee);
+router.route("/assign-courses/:courseId/assign").post(verifyJWT, verifyAdmin, assignCourseToEmployee);
 router.route("/performance").get(verifyJWT, verifyAdmin, getEmployeePerformance);
 router.route("/course/:courseId/stats").get(verifyJWT, verifyAdmin, getCourseStats)
 router.route("/employee-courses").get(verifyJWT, verifyAdmin, getEmployeeCourses);

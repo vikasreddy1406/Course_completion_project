@@ -92,8 +92,8 @@ const EmployeePerformance = () => {
     <div className='border mx-8 my-8 p-4'>
       <h1 className="text-2xl font-bold mb-4 text-center">Employee Performance by Course Tag</h1>
 
-      <div className="mb-4 text-center">
-        <label htmlFor="employeeSelect" className="block mb-2 text-lg font-semibold">Select Employee</label>
+      <div className="mb-8 text-center flex justify-center">
+        <label htmlFor="employeeSelect" className="block mb-2 text-lg font-semibold mx-4 mt-2">Select Employee</label>
         <select 
           id="employeeSelect" 
           className="border border-gray-300 p-2 rounded" 
@@ -110,14 +110,17 @@ const EmployeePerformance = () => {
 
       {selectedEmployee && (
         <div>
-          <h2 className="text-lg font-semibold mb-2">
+          {/* <h2 className="text-lg font-semibold mb-2 text-center">
             Performance Score by Tag for {selectedEmployee.name} ({selectedEmployee.designation})
-          </h2>
-          <Bar 
-            data={chartData} 
-            options={chartOptions}
-           
-          />
+          </h2> */}
+          <div className='w-full max-w-8xl h-[600px] mx-auto flex justify-center'>
+            <Bar 
+              data={chartData} 
+              options={chartOptions}
+            
+            />
+          </div>
+          
         </div>
       )}
     </div>

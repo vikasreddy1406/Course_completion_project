@@ -27,6 +27,8 @@ const AdminHome = () => {
   const [sortOrder, setSortOrder] = useState('Top');
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [employeeCoursesStats,setEmployeesCoursesStats] = useState([])
+
   const [expandedRows, setExpandedRows] = useState([]);
 
   const navigate = useNavigate();
@@ -73,7 +75,7 @@ const AdminHome = () => {
     const response = await axios.get('http://localhost:4000/api/admin/employee-courses', {
       headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
     });
-    setEmployees(response.data);
+    setEmployeesCoursesStats(response.data);
   };
 
   const handleCourseChange = (e) => {
@@ -86,10 +88,14 @@ const AdminHome = () => {
     if (!Cookie.get('accessToken')) {
       navigate("/login");
     }
+    if(Cookie.get('role')==="employee"){
+      navigate("/")
+    }
     fetchCourses();
     fetchEmployees();
     fetchPerformanceData();
     fetchEmployeeCourses();
+    
   }, []);
 
   useEffect(() => {
@@ -122,8 +128,9 @@ const AdminHome = () => {
   const handleAssignCourse = async () => {
     if (!selectedCourse || selectedEmployees.length === 0) return;
     try {
+ 
       await axios.post(
-        `http://localhost:4000/api/admin/courses/${selectedCourse}/assign`,
+        `http://localhost:4000/api/admin/assign-courses/${selectedCourse}/assign`,
         { employee_ids: selectedEmployees }, // Send array as employee_ids
         {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
@@ -192,6 +199,19 @@ const AdminHome = () => {
       }
     }
   };
+
+  const handleCheckboxChange = (employeeId) => {
+    setSelectedEmployees(prev => {
+      if (prev.includes(employeeId)) {
+        // If employee is already selected, remove them
+        return prev.filter(id => id !== employeeId);
+      } else {
+        // Otherwise, add them
+        return [...prev, employeeId];
+      }
+    });
+  };
+  
 
 
   const courseTemplate = (data) => {
@@ -318,12 +338,12 @@ const AdminHome = () => {
 
 
             <div className='mt-8 w-[48%] h-[670px] flex flex-col items-center border-2 rounded-md p-4  mx-4'>
-            <h1 className='text-center text-2xl font-bold mb-4'>Completion Rate of Courses</h1>
+            <h1 className='text-center text-2xl font-bold mb-8'>Completion Rate of Courses</h1>
             <div className='flex'>
-              <label  className="mr-2 w-1/2 mt-2 font-bold">Select Course:</label>
+              <label  className="w-1/2 font-bold">Select Course:</label>
               <select
                 id="course"
-                className="bg-gray-50 border max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                className="mb-8 bg-gray-50 border max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 onChange={handleCourseChange}  // Updated handler
               >
                 {courses.map(course => (
@@ -351,7 +371,7 @@ const AdminHome = () => {
 
       <div className="card border-2 mx-8 mb-8">
       <h1 className='text-center text-2xl font-bold my-4'>Employee Course Details Table</h1>
-        <DataTable value={employees} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
+        <DataTable value={employeeCoursesStats} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
           rowExpansionTemplate={courseTemplate} dataKey="employee_id"
           tableStyle={{ minWidth: '60rem' }} className="shadow-md text-center">
 
@@ -401,7 +421,7 @@ const AdminHome = () => {
                   </select>
                 </div>
 
-                <div className="mb-4">
+                 <div className="mb-4">
                   <h3 className="text-lg text-gray-900 dark:text-white">Select Employees</h3>
                   {employees.map(employee => (
                     <div key={employee._id} className="flex items-center mb-2">
@@ -427,7 +447,38 @@ const AdminHome = () => {
 
                 <button onClick={handleAssignCourse} type='button' className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                   Assign Course
-                </button>
+                </button> 
+
+                {/* <div className="mb-4">
+                  <h3 className="text-lg text-gray-900 dark:text-white">Select Employees</h3>
+                  {employees && employees.length > 0 ? (
+                    employees.map(employee => (
+                      <div key={employee._id} className="flex items-center mb-2">
+                        <input
+                          id={employee._id}
+                          type="checkbox"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                          // Check if the employee is selected
+                          checked={selectedEmployees.includes(employee._id)}
+                          onChange={() => handleCheckboxChange(employee._id)} // Handle checkbox change
+                        />
+                        <label htmlFor={employee._id} className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
+                          {employee.name} - {employee.designation}
+                        </label>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No employees available to assign courses.</p>
+                  )}
+                </div> */}
+
+                {/* <button
+                  onClick={handleAssignCourse}
+                  type="button"
+                  className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Assign Course
+                </button> */}
               </form>
             </div>
           </div>

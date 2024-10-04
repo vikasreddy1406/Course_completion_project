@@ -80,7 +80,7 @@ const getAllEmployees = async (req, res) => {
     try {
         const employees = await User.find({ role: 'employee' }, 'name _id designation');
         if (!employees.length) {
-            return res.status(404).json({ message: 'No employees found' });
+            return res.status(203).json({ message: 'No employees found' });
         }
 
         return res.status(200).json(employees);

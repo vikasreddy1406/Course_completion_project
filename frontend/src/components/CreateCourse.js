@@ -18,6 +18,7 @@ const CreateCourse = () => {
   const [courseCreated, setCourseCreated] = useState(false);
   const [courseId, setCourseId] = useState(null);
   const navigate = useNavigate();
+  const [moduleAdded,setModuleAdded]=useState(0)
 
   // Handle image upload
   const handleImageChange = (e) => {
@@ -73,6 +74,7 @@ const CreateCourse = () => {
       setModuleTitle('');
       setModuleContent('');
       setModuleDuration('');
+      setModuleAdded(moduleAdded+1);
       showAlert('Module added successfully');
     } catch (error) {
       console.error('Error adding module:', error);
@@ -149,7 +151,7 @@ const CreateCourse = () => {
 
         <button type='button'
           onClick={handleCreateCourse}
-          className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl text-white font-semibold py-2 rounded-lg mb-6"
+          className="w-full text-white bg-[#0369a1] focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-6"
           disabled={courseCreated}
         >
           Create Course
@@ -191,7 +193,7 @@ const CreateCourse = () => {
 
             <button type='button'
               onClick={handleAddModule}
-              className="w-full text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              className="w-full text-white bg-[#0369a1] focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
             >
               Add Module
             </button>
@@ -209,14 +211,16 @@ const CreateCourse = () => {
         <div className="flex justify-between mt-4">
           <button type='button'
             onClick={handleSaveClick}
-            className="w-full text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            disabled={moduleAdded<1}
+            className="w-full text-white bg-green-700  font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2  "
           >
             Save
           </button>
 
           <button type='button'
             onClick={() => navigate('/admin')}
-            className="w-full text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            disabled={moduleAdded===0 && courseCreated}
+            className="w-full text-white bg-red-700  font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 "
           >
             Cancel
           </button>
