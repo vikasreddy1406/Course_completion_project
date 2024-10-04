@@ -9,13 +9,15 @@ export default function Navbar() {
     const [name, setName] = useState(""); 
     const [designation, setDesignation] = useState("");
   const location = useLocation();
+  const [employeeId,setEmployeeId] = useState("")
 
   useEffect(() => {
     const token = Cookie.get("accessToken");
     if (token) {
       const decodedToken = jwtDecode(token);
       const currentRole = decodedToken.role;
-
+      setEmployeeId(decodedToken._id)
+      
       setRole(currentRole);
         setName(decodedToken.name);
       setDesignation(decodedToken.designation);
@@ -38,6 +40,13 @@ export default function Navbar() {
     navigate('/login');
   };
 
+  const handleProfileClick = (e)=>{
+    e.preventDefault();
+    if(role==="employee"){
+      navigate(`/profile/${employeeId}`)
+    }
+  }
+
   return (
     <div className="mb-32 sm:mb-20 dark">
       <nav className="bg-white dark:bg-[#0369a1] fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
@@ -57,6 +66,8 @@ export default function Navbar() {
           </Link>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse bg-transparent">
             <button
+              onClick={handleProfileClick}
+              disabled={role==="admin"}
               type="button"
               className="mr-4 text-[#0369a1] bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-white  dark:focus:ring-white"
             >

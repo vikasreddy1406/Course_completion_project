@@ -13,6 +13,7 @@ import Contact from "./components/Contact.js";
 import CreateCourse from "./components/CreateCourse.js";
 import CourseDetails from "./components/CourseDetails.js";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
+import EmployeeProfile from "./components/EmployeeProfile.js";
 
 
 
@@ -47,6 +48,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/create-course" element={<CreateCourse />} />
           <Route path="/courses/:courseId" element={<CourseDetails />} />
+          <Route path="/profile/:employeeId" element={<EmployeeProfile/>} />
           
           
         </Routes>

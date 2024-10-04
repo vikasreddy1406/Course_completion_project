@@ -110,35 +110,31 @@ const AdminHome = () => {
   const getFilteredData = () => {
     let filteredData = performanceData;
 
-    // Filter by designation if selected
     if (selectedDesignation !== 'All') {
       filteredData = filteredData.filter(emp => emp.designation === selectedDesignation);
     }
-
-    // Sort by performance score (ascending or descending based on sortOrder)
     filteredData.sort((a, b) => {
       return sortOrder === 'Top' ? b.performance_score - a.performance_score : a.performance_score - b.performance_score;
     });
 
-    // Return top 5 or bottom 5
     return filteredData.slice(0, 5);
   };
 
-  // Handle course assignment
+  
   const handleAssignCourse = async () => {
     if (!selectedCourse || selectedEmployees.length === 0) return;
     try {
  
       await axios.post(
         `http://localhost:4000/api/admin/assign-courses/${selectedCourse}/assign`,
-        { employee_ids: selectedEmployees }, // Send array as employee_ids
+        { employee_ids: selectedEmployees }, 
         {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         }
       );
       showAlert('Course assigned successfully');
-      setSelectedEmployees([]); // Reset selected employees
-      setShowAssignCourseModal(false); // Close modal after assignment
+      setSelectedEmployees([]); 
+      setShowAssignCourseModal(false); 
     } catch (error) {
       console.error('Error assigning course:', error);
     }
@@ -156,15 +152,6 @@ const AdminHome = () => {
     ],
   };
 
-  const filteredSearchData = performanceData.filter((data) => {
-    const term = searchTerm.toLowerCase();
-    return (
-      data.employee.toLowerCase().includes(term) ||
-      data.email.toLowerCase().includes(term) ||
-      data.designation.toLowerCase().includes(term)
-    );
-  });
-  
 
   const courseChartData = courseStats ? {
     labels: ['Assigned', 'Completed'],
@@ -199,20 +186,7 @@ const AdminHome = () => {
       }
     }
   };
-
-  const handleCheckboxChange = (employeeId) => {
-    setSelectedEmployees(prev => {
-      if (prev.includes(employeeId)) {
-        // If employee is already selected, remove them
-        return prev.filter(id => id !== employeeId);
-      } else {
-        // Otherwise, add them
-        return [...prev, employeeId];
-      }
-    });
-  };
   
-
 
   const courseTemplate = (data) => {
     return (
