@@ -90,13 +90,27 @@ const updateCourseDetails = async (req, res) => {
     }
   };
 
+
   const assignCourseToEmployee = async (req, res) => {
     try {
       const { courseId } = req.params;
       const { employee_ids } = req.body; 
-  
+
+      const existingAssignments = await CourseAssignment.find({
+        course_id: courseId,
+        employee_id: { $in: employee_ids },
+      }).select('employee_id');
+
+      const assignedEmployeeIds = existingAssignments.map(assignment => assignment.employee_id.toString());
+
+      const employeesToAssign = employee_ids.filter(id => !assignedEmployeeIds.includes(id));
+
+      if (employeesToAssign.length === 0) {
+        return res.status(200).json({ message: 'All selected employees already assigned to this course.' });
+      }
+
       const assignments = await Promise.all(
-        employee_ids.map(async (employee_id) => {
+        employeesToAssign.map(async (employee_id) => {
           const assignment = new CourseAssignment({
             employee_id,
             course_id: courseId,
@@ -110,6 +124,7 @@ const updateCourseDetails = async (req, res) => {
       res.status(500).json({ message: 'Error assigning courses', error });
     }
   };
+  
 
 
 const getEmployeePerformance = async (req, res) => {
