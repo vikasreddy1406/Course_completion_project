@@ -190,7 +190,7 @@ const Home = () => {
                     </Link>
                     {course.course_id && course.completion_percentage === 100 && (
                       <button
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                        className="inline-flex items-center ml-1 px-4 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         onClick={() => downloadCertificate(course.course_id?._id)}
                       >
                         Get Certificate

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Chart from 'react-apexcharts'; 
-import { Tag } from 'primereact/tag'
+import { Tag } from 'primereact/tag';
+import img from "../../src/assests/image.png"
+import LoadingUi from './LoadingUi';
 
 export default function EmployeeProfile() {
   const { employeeId } = useParams();
@@ -21,7 +23,7 @@ export default function EmployeeProfile() {
       data: [],
     }],
   });
-  const [courses, setCourses] = useState([]); // State to hold courses data
+  const [courses, setCourses] = useState([]); 
 
   const [tags] = useState([
     'Web Development', 'Data Engineering', 'Data Science', 
@@ -36,7 +38,7 @@ export default function EmployeeProfile() {
         const employeeData = response.data.find(emp => emp.employee_id === employeeId);
         if (employeeData) {
           setEmployee(employeeData);
-          setCourses(employeeData.courses); // Set the courses data
+          setCourses(employeeData.courses); 
           prepareChartData(employeeData.courses);
         }
       } catch (error) {
@@ -111,31 +113,35 @@ export default function EmployeeProfile() {
     }
   };
 
-  if (!employee) return <div>Loading...</div>;
+  if (!employee) return <LoadingUi/>;
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="w-1/3">
-          <img src="/path/to/profile/photo" alt="Profile" className="w-full h-full object-cover" />
+    <div className="container mx-auto ">
+      <div className='flex'>
+        <div className="flex flex-col bg-white  rounded-lg w-[25%] ml-4 items-center">
+          <div className="h-[50%] w-[50%]">
+            <img src={img} alt="Profile" className="w-full h-full object-cover rounded-full" />
+          </div>
+          <div className="p-4 h-fit">
+            <h2 className="text-2xl font-bold text-center">{employee.name}</h2>
+            <p className="text-gray-600"><span className='font-semibold text-black'>Email:</span> {employee.email}</p>
+            <p className="text-gray-600"><span className='font-semibold text-black'>Designation:</span> {employee.designation}</p>
+            <p className="text-gray-600"><span className='font-semibold text-black'>Total Courses:</span> {employee.totalCourses}</p>
+            <p className="text-gray-600"><span className='font-semibold text-black'>Completed Courses:</span> {employee.completedCourses}</p>
+            <p className="text-gray-600"><span className='font-semibold text-black'>Performance Score:</span> {employee.performanceScore}</p>
+          </div>
         </div>
-        <div className="p-4 w-2/3">
-          <h2 className="text-2xl font-bold">{employee.name}</h2>
-          <p className="text-gray-600">Email: {employee.email}</p>
-          <p className="text-gray-600">Designation: {employee.designation}</p>
-          <p className="text-gray-600">Total Courses: {employee.totalCourses}</p>
-          <p className="text-gray-600">Completed Courses: {employee.completedCourses}</p>
-          <p className="text-gray-600">Performance Score: {employee.performanceScore}</p>
+        <div className='w-[5%]'>
+
         </div>
-      </div>
-      
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">Performance Score by Course Tags</h3>
-        <Chart options={performanceData.options} series={performanceData.series} type="bar" height={350} />
+        <div className="mt-6 w-[70%] ">
+          <h3 className="text-lg font-semibold mb-2 text-center">Performance Score by Course Tags</h3>
+          <Chart options={performanceData.options} series={performanceData.series} type="bar" height={350} />
+        </div>
       </div>
 
       <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">Courses Overview</h3>
+        <h3 className="text-lg font-semibold mb-2 text-center">Courses Overview</h3>
         {courseTemplate(courses)} {/* Render the course table */}
       </div>
     </div>

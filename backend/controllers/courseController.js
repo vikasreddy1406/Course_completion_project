@@ -414,7 +414,7 @@ const getCourseStats = async (req, res) => {
 const getEmployeeCourses = async (req, res) => {
   try {
     // Fetch all employees
-    const employees = await User.find({ role: 'employee' }).select('_id name designation');
+    const employees = await User.find({ role: 'employee' }).select('_id name email designation');
 
     const employeeCourses = await Promise.all(employees.map(async (employee) => {
       // Find the courses assigned to the employee
@@ -456,6 +456,7 @@ const getEmployeeCourses = async (req, res) => {
         employee_id: employee._id,
         name: employee.name,
         designation: employee.designation,
+        email: employee.email,
         totalCourses,
         completedCourses,
         performanceScore,
