@@ -128,7 +128,7 @@ export default function EmployeeProfile() {
             <p className="text-gray-600"><span className='font-semibold text-black'>Designation:</span> {employee.designation}</p>
             <p className="text-gray-600"><span className='font-semibold text-black'>Total Courses:</span> {employee.totalCourses}</p>
             <p className="text-gray-600"><span className='font-semibold text-black'>Completed Courses:</span> {employee.completedCourses}</p>
-            <p className="text-gray-600"><span className='font-semibold text-black'>Performance Score:</span> {employee.performanceScore}</p>
+            <p className="text-gray-600"><span className='font-semibold text-black'>Performance Score:</span> {employee.performanceScore}%</p>
           </div>
         </div>
         <div className='w-[5%]'>

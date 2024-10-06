@@ -8,6 +8,7 @@ import { jwtDecode } from 'jwt-decode';
 import { alertContext } from '../context/alertContext';
 import LoadingUi from "./LoadingUi"; 
 import img from "../../src/assests/man.jpg" 
+import EmployeeLearningPath from './EmployeeLearningPath';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -128,6 +129,9 @@ const Home = () => {
         </div>
       </div>
 
+      <div>
+        <EmployeeLearningPath/>
+        </div>
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold mx-auto ">Courses</h2>

@@ -28,10 +28,12 @@ app.use('/certificates', express.static('certificates'));
 
 import userRoutes from "./routes/userRoutes.js"
 import adminRoutes from "./routes/adminRoutes.js"
+import learningPathRoutes from "./routes/learningPathRoutes.js"
 
 
 app.use('/api/user',userRoutes)
 app.use('/api/admin', adminRoutes);
+app.use('/api/learningpath',learningPathRoutes)
 
 
 app.listen(PORT,()=>{

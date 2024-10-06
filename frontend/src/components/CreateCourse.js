@@ -155,7 +155,7 @@ const CreateCourse = () => {
           disabled={courseCreated}
         >
           Create Course
-        </button>
+        </button> 
 
         {courseCreated && (
           <div className="mt-6">

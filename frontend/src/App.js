@@ -13,7 +13,13 @@ import Contact from "./components/Contact.js";
 import CreateCourse from "./components/CreateCourse.js";
 import CourseDetails from "./components/CourseDetails.js";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 import EmployeeProfile from "./components/EmployeeProfile.js";
+import AdminLearningPaths from "./components/AdminLearningPaths.js";
+import AssignLearningPath from "./components/AssignLearningPath.js";
+import EmployeeLearningPath from "./components/EmployeeLearningPath.js";
 
 
 
@@ -49,8 +55,9 @@ function App() {
           <Route path="/create-course" element={<CreateCourse />} />
           <Route path="/courses/:courseId" element={<CourseDetails />} />
           <Route path="/profile/:employeeId" element={<EmployeeProfile/>} />
-          
-          
+          <Route path="/create-learningpath" element={<AdminLearningPaths />} />
+          <Route path="/assign-learningpath" element={<AssignLearningPath />} />
+          <Route path="/learning-path/:employeeId" element={<EmployeeLearningPath />} />
         </Routes>
         <ToastContainer
           position="top-right"
