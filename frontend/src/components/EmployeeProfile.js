@@ -49,24 +49,32 @@ export default function EmployeeProfile() {
     fetchEmployeeData();
   }, [employeeId]);
 
+
   const prepareChartData = (courses) => {
     const tagsPerformance = {};
-
+    const tagCourseCount = {};
+  
     tags.forEach(tag => {
       tagsPerformance[tag] = 0;
+      tagCourseCount[tag] = 0; 
     });
-
+  
     courses.forEach(course => {
       const tag = course.course_tag || 'General';
       if (tagsPerformance[tag] !== undefined) {
         tagsPerformance[tag] += course.completion_percentage; 
+        tagCourseCount[tag] += 1; 
       }
     });
-
-    performanceData.options.xaxis.categories = tags; 
-    performanceData.series[0].data = tags.map(tag => tagsPerformance[tag]); 
-    setPerformanceData({ ...performanceData }); 
+  
+    performanceData.options.xaxis.categories = tags;
+    performanceData.series[0].data = tags.map(tag => {
+      return tagCourseCount[tag] > 0 ? (tagsPerformance[tag] / tagCourseCount[tag]) : 0;
+    });
+  
+    setPerformanceData({ ...performanceData });
   };
+  
 
   const courseTemplate = (data) => {
     return (

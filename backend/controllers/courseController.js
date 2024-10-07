@@ -353,7 +353,10 @@ const generateCertificate = async (req, res) => {
     }
 
     // Create a new PDF document
-    const doc = new PDFDocument();
+    const doc = new PDFDocument({
+      size: 'A4', // Standard A4 size
+      margins: { top: 50, bottom: 50, left: 50, right: 50 } // Margins
+    });
 
     // Set the filename for the certificate
     const filename = `${employee.name}-certificate.pdf`;
@@ -365,26 +368,66 @@ const generateCertificate = async (req, res) => {
     // Pipe the PDF document to the response
     doc.pipe(res);
 
-    // Add certificate content
-    doc.fontSize(25).text('Certificate of Completion', { align: 'center' });
+    // Add a background color or watermark (optional)
+    doc.rect(0, 0, doc.page.width, doc.page.height).fill('#f0f3f4');
 
+    // Add a logo or header image (optional)
+    // doc.image('path_to_logo.png', { fit: [150, 150], align: 'center' });
+
+    // Border for aesthetics
+    doc.lineWidth(2).rect(30, 30, doc.page.width - 60, doc.page.height - 60).stroke('#00796b');
+
+    // Add certificate title
+    doc.fontSize(30)
+      .fillColor('#2e7d32')
+      .font('Helvetica-Bold')
+      .text('Certificate of Completion', { align: 'center', underline: true });
+
+    // Move down a bit for spacing
+    doc.moveDown(3);
+
+    // Add introductory text
+    doc.fontSize(18)
+      .fillColor('black')
+      .text('This is to certify that', { align: 'center' });
+
+    // Move down and add employee's name with underline
+    doc.moveDown(1);
+    doc.fontSize(22)
+      .fillColor('#2e7d32')
+      .font('Helvetica-Bold')
+      .text(`${employee.name}`, { align: 'center', underline: true });
+
+    // Add employee's designation
+    doc.moveDown(1);
+    doc.fontSize(16)
+      .fillColor('black')
+      .text(`with the designation of ${employee.designation}`, { align: 'center' });
+
+    // Move down and add course completion text
     doc.moveDown(2);
-    doc.fontSize(18).text(`This is to certify that`, { align: 'center' });
+    doc.fontSize(18)
+      .text('has successfully completed the course', { align: 'center' });
 
+    // Add course title with some styling
     doc.moveDown(1);
-    doc.fontSize(22).text(`${employee.name}`, { align: 'center', underline: true });
+    doc.fontSize(22)
+      .fillColor('#2e7d32')
+      .font('Helvetica-Bold')
+      .text(`${course.title}`, { align: 'center', underline: true });
 
-    doc.moveDown(1);
-    doc.fontSize(18).text(`with the designation of ${employee.designation}`, { align: 'center' });
+    // Move down and add the issue date
+    doc.moveDown(3);
+    doc.fontSize(14)
+      .fillColor('black')
+      .text(`Date: ${new Date().toLocaleDateString()}`, { align: 'right' });
 
-    doc.moveDown(1);
-    doc.fontSize(18).text(`has successfully completed the course`, { align: 'center' });
-
-    doc.moveDown(1);
-    doc.fontSize(22).text(`${course.title}`, { align: 'center', underline: true });
-
-    doc.moveDown(2);
-    doc.fontSize(14).text(`Date: ${new Date().toLocaleDateString()}`, { align: 'right' });
+    // Add a signature line or placeholder (optional)
+    doc.moveDown(5);
+    doc.fontSize(16)
+      .fillColor('black')
+      .text('JMAN Group', { align: 'right' });
+    doc.fontSize(12).text('Authorized Signature', { align: 'right' });
 
     // Finalize the PDF document
     doc.end();
@@ -393,6 +436,7 @@ const generateCertificate = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 const getCourseStats = async (req, res) => {
   try {
