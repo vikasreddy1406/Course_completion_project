@@ -65,25 +65,7 @@ export default function AdminLearningPaths() {
                     />
                 </div>
 
-                {/* <div className="mb-4">
-                    <label className="text-gray-600">Select Courses</label>
-                    <select
-                        multiple
-                        onChange={(e) =>
-                            setLearningPath({
-                                ...learningPath,
-                                selectedCourses: [...e.target.selectedOptions].map((opt) => opt.value),
-                            })
-                        }
-                        className="border p-2 mt-1 w-full"
-                    >
-                        {courses.map((course) => (
-                            <option key={course._id} value={course._id}>
-                                {course.title}
-                            </option>
-                        ))}
-                    </select>
-                </div> */}
+                
 
                 <div className="mb-4">
                     <label className="text-gray-600">Select Courses</label>

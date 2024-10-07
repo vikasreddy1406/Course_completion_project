@@ -96,7 +96,6 @@ const AdminHome = () => {
     fetchEmployees();
     fetchPerformanceData();
     fetchEmployeeCourses();
-    
   }, []);
 
   useEffect(() => {
@@ -104,6 +103,7 @@ const AdminHome = () => {
       setSelectedCourse(courses[0]._id);
       fetchCourseStats(courses[0]._id); 
     }
+  
   }, [courses]);
 
   
@@ -136,6 +136,8 @@ const AdminHome = () => {
       showAlert('Course assigned successfully');
       setSelectedEmployees([]); 
       setShowAssignCourseModal(false); 
+
+      await fetchEmployeeCourses();
     } catch (error) {
       console.error('Error assigning course:', error);
     }

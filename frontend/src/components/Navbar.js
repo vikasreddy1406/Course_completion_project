@@ -1,32 +1,31 @@
 import Cookie from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 export default function Navbar() {
   const [link, setLink] = useState("/");
-  const [role, setRole] = useState("employee"); 
-    const [name, setName] = useState(""); 
-    const [designation, setDesignation] = useState("");
+  const [role, setRole] = useState("employee");
+  const [name, setName] = useState("");
+  const [designation, setDesignation] = useState("");
   const location = useLocation();
-  const [employeeId,setEmployeeId] = useState("")
+  const [employeeId, setEmployeeId] = useState("");
+  const [activeLink, setActiveLink] = useState(location.pathname); 
 
   useEffect(() => {
     const token = Cookie.get("accessToken");
     if (token) {
       const decodedToken = jwtDecode(token);
       const currentRole = decodedToken.role;
-      setEmployeeId(decodedToken._id)
-      
+      setEmployeeId(decodedToken._id);
       setRole(currentRole);
-        setName(decodedToken.name);
+      setName(decodedToken.name);
       setDesignation(decodedToken.designation);
-      // console.log(designation)
 
       if (currentRole === "admin") {
         setLink("/admin");
       } else {
-        setLink("/"); 
+        setLink("/");
       }
     }
   }, []);
@@ -37,15 +36,29 @@ export default function Navbar() {
     e.preventDefault();
     Cookie.remove("accessToken");
     Cookie.remove("role");
-    navigate('/login');
+    navigate("/login");
   };
 
-  const handleProfileClick = (e)=>{
+  const handleProfileClick = (e) => {
     e.preventDefault();
-    if(role==="employee"){
-      navigate(`/profile/${employeeId}`)
+    if (role === "employee") {
+      navigate(`/profile/${employeeId}`);
     }
-  }
+  };
+
+  const handleLearningPathClick = (e) => {
+    e.preventDefault();
+    if (role === "employee") {
+      navigate(`/learning-path/${employeeId}`);
+    } else {
+      navigate("/admin/learning-path");
+    }
+    setActiveLink("/learning-path");
+  };
+
+  const handleHomeClick = () => {
+    setActiveLink(link); 
+  };
 
   return (
     <div className="mb-32 sm:mb-20 dark">
@@ -67,9 +80,9 @@ export default function Navbar() {
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse bg-transparent">
             <button
               onClick={handleProfileClick}
-              disabled={role==="admin"}
+              disabled={role === "admin"}
               type="button"
-              className="mr-4 text-[#0369a1] bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-white  dark:focus:ring-white"
+              className="mr-4 text-[#0369a1] bg-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-white dark:focus:ring-white"
             >
               {name} - {designation}
             </button>
@@ -89,16 +102,26 @@ export default function Navbar() {
               <li>
                 <Link
                   to={link}
-                  className={`block py-2 text-xl px-3 rounded md:p-0 ${location.pathname === link ? "text-black" : "text-gray-900 dark:text-white"}`}
+                  onClick={handleHomeClick}
+                  className={`block py-2 text-xl px-3 rounded md:p-0 ${activeLink === link ? "text-blue-600 dark:text-blue-400" : "text-gray-900 dark:text-white"}`}
                   aria-current="page"
                 >
                   Home
                 </Link>
               </li>
               <li>
+                <button
+                  onClick={handleLearningPathClick}
+                  className={`block py-2 text-xl px-3 rounded md:p-0 ${activeLink === "/learning-path" ? "text-blue-600 dark:text-blue-400" : "text-gray-900 dark:text-white"}`}
+                >
+                  Learning Path
+                </button>
+              </li>
+              <li>
                 <Link
                   to="/contact"
-                  className={`block py-2 text-xl px-3 rounded md:p-0 ${location.pathname === "/contact" ? "text-black" : "text-gray-900 dark:text-white"}`}
+                  onClick={() => setActiveLink("/contact")} 
+                  className={`block py-2 text-xl px-3 rounded md:p-0 ${activeLink === "/contact" ? "text-blue-600 dark:text-blue-400" : "text-gray-900 dark:text-white"}`}
                 >
                   Contact
                 </Link>

@@ -129,9 +129,9 @@ const Home = () => {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <EmployeeLearningPath/>
-        </div>
+        </div> */}
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold mx-auto ">Courses</h2>
