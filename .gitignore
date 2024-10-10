@@ -23,3 +23,6 @@
 /frontend/npm-debug.log*
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
+
+/frontend/ml_model/.venv
+/frontend/ml_model/env
