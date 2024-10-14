@@ -26,7 +26,7 @@ def fetch_employee_data(api_url):
                     "modules_completed": course["modulesCompleted"],
                     "total_modules": course["totalModules"],
                     "completion_percentage": course["completion_percentage"],
-                    "course_score": random.randint(40, 100),  # Random score between 40 and 100
+                    "course_score": random.randint(40, 100),  
                     "performance_score": performance_score
                 })
 
