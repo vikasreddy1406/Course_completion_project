@@ -1,8 +1,16 @@
 from flask import Flask, jsonify, request
 from recommendation_model import fetch_employee_data, preprocess_data, recommend_courses
+from flask_cors import CORS
 
+# Create a Flask app
 app = Flask(__name__)
+CORS(app)  # Enable CORS
 
+@app.route('/', methods=['GET'])
+def welcome():
+    print("test")
+    return jsonify("test")
+    
 @app.route('/api/recommend-courses/<string:user_id>', methods=['GET'])
 def get_recommendations(user_id):
     print(f"Received request for user_id: {user_id}")  # Debug print
@@ -12,12 +20,11 @@ def get_recommendations(user_id):
         df_final = preprocess_data(df)
 
         recommended_courses = recommend_courses(df_final, user_id)
+        print(f"Recommended courses for User ID {user_id}: {recommended_courses}")  # Debug print
         return jsonify(recommended_courses), 200
     except Exception as e:
+        print(f"Error: {str(e)}")  # Print the error message for debugging
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(port=5000)
-
-from flask_cors import CORS
-CORS(app)
+    app.run(host='0.0.0.0', port=5000, debug=True)
