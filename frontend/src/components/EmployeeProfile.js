@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Chart from 'react-apexcharts'; 
+import Chart from 'react-apexcharts';
 import { Tag } from 'primereact/tag';
-import img from "../../src/assests/image.png"
+import img from "../../src/assests/image.png";
 import LoadingUi from './LoadingUi';
 
 export default function EmployeeProfile() {
@@ -23,11 +23,11 @@ export default function EmployeeProfile() {
       data: [],
     }],
   });
-  const [courses, setCourses] = useState([]); 
+  const [courses, setCourses] = useState([]);
 
   const [tags] = useState([
-    'Web Development', 'Data Engineering', 'Data Science', 
-    'Generative AI', 'DevOps', 'Cybersecurity', 
+    'Web Development', 'Data Engineering', 'Data Science',
+    'Generative AI', 'DevOps', 'Cybersecurity',
     'Mobile Development', 'UI/UX Design', 'Software Testing'
   ]);
 
@@ -38,7 +38,7 @@ export default function EmployeeProfile() {
         const employeeData = response.data.find(emp => emp.employee_id === employeeId);
         if (employeeData) {
           setEmployee(employeeData);
-          setCourses(employeeData.courses); 
+          setCourses(employeeData.courses);
           prepareChartData(employeeData.courses);
         }
       } catch (error) {
@@ -53,28 +53,28 @@ export default function EmployeeProfile() {
   const prepareChartData = (courses) => {
     const tagsPerformance = {};
     const tagCourseCount = {};
-  
+
     tags.forEach(tag => {
       tagsPerformance[tag] = 0;
-      tagCourseCount[tag] = 0; 
+      tagCourseCount[tag] = 0;
     });
-  
+
     courses.forEach(course => {
       const tag = course.course_tag || 'General';
       if (tagsPerformance[tag] !== undefined) {
-        tagsPerformance[tag] += course.completion_percentage; 
-        tagCourseCount[tag] += 1; 
+        tagsPerformance[tag] += course.completion_percentage;
+        tagCourseCount[tag] += 1;
       }
     });
-  
+
     performanceData.options.xaxis.categories = tags;
     performanceData.series[0].data = tags.map(tag => {
       return tagCourseCount[tag] > 0 ? (tagsPerformance[tag] / tagCourseCount[tag]) : 0;
     });
-  
+
     setPerformanceData({ ...performanceData });
   };
-  
+
 
   const courseTemplate = (data) => {
     return (
@@ -88,6 +88,8 @@ export default function EmployeeProfile() {
               <th className="p-2 text-center">Modules Completed</th>
               <th className="p-2 text-center">Status</th>
               <th className="p-2 text-center">Completion Percentage</th>
+              <th className="p-2 text-center">Quiz Score</th>
+              <th className="p-2 text-center">Quiz Completed</th>
             </tr>
           </thead>
           <tbody>
@@ -101,6 +103,8 @@ export default function EmployeeProfile() {
                   <Tag value={course.status} severity={getSeverity(course.status)} />
                 </td>
                 <td className="p-2 text-center">{course.completion_percentage}%</td>
+                <td className="p-2 text-center">{course.quiz_score}</td>
+                <td className="p-2 text-center">{course.quiz_completed}</td>
               </tr>
             ))}
           </tbody>
@@ -109,7 +113,7 @@ export default function EmployeeProfile() {
     );
   };
 
- // Utility function for status severity
+  // Utility function for status severity
   const getSeverity = (status) => {
     switch (status) {
       case 'Completed':
@@ -121,12 +125,12 @@ export default function EmployeeProfile() {
     }
   };
 
-  if (!employee) return <LoadingUi/>;
+  if (!employee) return <LoadingUi />;
 
   return (
     <div className="container mx-auto ">
       <div className='flex'>
-        <div className="flex flex-col bg-white  rounded-lg w-[25%] ml-4 items-center">
+        <div className="flex flex-col bg-white rounded-lg w-[25%] ml-4 items-center">
           <div className="h-[50%] w-[50%]">
             <img src={img} alt="Profile" className="w-full h-full object-cover rounded-full" />
           </div>
@@ -139,10 +143,8 @@ export default function EmployeeProfile() {
             <p className="text-gray-600"><span className='font-semibold text-black'>Performance Score:</span> {employee.performanceScore}%</p>
           </div>
         </div>
-        <div className='w-[5%]'>
-
-        </div>
-        <div className="mt-6 w-[70%] ">
+        <div className='w-[5%]'></div>
+        <div className="mt-6 w-[70%]">
           <h3 className="text-lg font-semibold mb-2 text-center">Performance Score by Course Tags</h3>
           <Chart options={performanceData.options} series={performanceData.series} type="bar" height={350} />
         </div>

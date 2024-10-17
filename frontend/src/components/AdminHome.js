@@ -203,6 +203,8 @@ const AdminHome = () => {
               <th className="p-2 text-center">Modules Completed</th>
               <th className="p-2 text-center">Status</th>
               <th className="p-2 text-center">Completion Percentage</th>
+              <th className="p-2 text-center">Quiz Score</th>
+              <th className="p-2 text-center">Quiz Completed</th>
             </tr>
           </thead>
           <tbody>
@@ -216,6 +218,8 @@ const AdminHome = () => {
                   <Tag value={course.status} severity={getSeverity(course.status)} />
                 </td>
                 <td className="p-2 text-center">{course.completion_percentage}%</td>
+                <td className="p-2 text-center">{course.quiz_score}</td>
+                <td className="p-2 text-center">{course.quiz_completed}</td>
               </tr>
             ))}
           </tbody>

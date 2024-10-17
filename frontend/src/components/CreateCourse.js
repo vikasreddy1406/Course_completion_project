@@ -500,6 +500,7 @@ const CreateCourse = () => {
           </div>
         )}
 
+
         {/* Quiz creation section */}
         {courseCreated && (
           <div className="mt-8">
@@ -549,7 +550,14 @@ const CreateCourse = () => {
             >
               Add Question
             </button>
-
+            {/* Display added questions */}
+              <ul className="my-4">
+                {questions.map((question, index) => (
+                  <li key={index} className="text-gray-700 font-medium">
+                    Question {index + 1}: {question.question_text}
+                  </li>
+                ))}
+              </ul>
             <button
               type="button"
               onClick={handleQuizSubmission}
@@ -558,7 +566,7 @@ const CreateCourse = () => {
               Submit Quiz
             </button>
           </div>
-        )}
+        )} 
 
         <button
           onClick={handleSaveClick}

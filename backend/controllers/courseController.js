@@ -197,13 +197,16 @@ const getAssignedCourses = async (req, res) => {
 };
 
 
+
 const getCourseDetails = async (req, res) => {
   try {
-   
     const { courseId } = req.params;
+
+    // Fetch course and modules
     const course = await Course.findById(courseId);
     const modules = await CourseModule.find({ course_id: courseId });
 
+    // Fetch module progress for the employee and the specific course
     const moduleProgress = await ModuleProgress.find({
       employee_id: req.user._id,
       course_id: courseId,
@@ -223,20 +226,25 @@ const getCourseDetails = async (req, res) => {
     const totalModules = modules.length;
     const completionPercentage = totalModules > 0 ? (completedModules / totalModules) * 100 : 0;
 
-    // Find or create course progress entry
+    // Find or create course progress entry and update completion percentage
     const progress = await CourseProgress.findOneAndUpdate(
       { employee_id: req.user._id, course_id: courseId },
       { completion_percentage: completionPercentage },
       { upsert: true, new: true }
     );
 
+    // Return course details along with quiz score and completion percentage
     res.status(200).json({
       course,
       modules: modulesWithCompletion,
-      completion_percentage: progress.completion_percentage
+      completion_percentage: progress.completion_percentage,
+      quiz: {
+        score: progress.quiz.score,
+        is_passed: progress.quiz.is_passed,
+        completed_at: progress.quiz.completed_at
+      }
     });
   } catch (error) {
- 
     res.status(500).json({ message: 'Error fetching course details', error });
   }
 };
@@ -474,6 +482,7 @@ const getEmployeeCourses = async (req, res) => {
           is_completed: true
         });
 
+        // Fetch course progress, including quiz details
         const courseProgress = await CourseProgress.findOne({
           employee_id: employee._id,
           course_id: assignment.course_id._id
@@ -482,14 +491,20 @@ const getEmployeeCourses = async (req, res) => {
         const completionPercentage = courseProgress ? courseProgress.completion_percentage : 0;
         const courseStatus = completedModules === totalModules ? 'Completed' : 'In Progress';
 
+        // Include quiz details
+        const quizScore = courseProgress && courseProgress.quiz ? courseProgress.quiz.score : null;
+        const quizCompleted = courseProgress && courseProgress.quiz ? courseProgress.quiz.is_passed : false;
+
         return {
           course_id: assignment.course_id._id,
           course_title: assignment.course_id.title,
-          course_tag: assignment.course_id.tag, 
+          course_tag: assignment.course_id.tag,
           totalModules,
           modulesCompleted: completedModules,
           status: courseStatus,
           completion_percentage: completionPercentage,
+          quiz_score: quizScore !== null ? quizScore : 0, 
+          quiz_completed: quizCompleted ? 'Yes' : 'No'  // Indicate if the quiz is completed
         };
       }));
 
@@ -514,6 +529,9 @@ const getEmployeeCourses = async (req, res) => {
     res.status(500).json({ message: 'Error fetching employee course details', error });
   }
 };
+
+
+
 
  const createQuizForCourse = async (req, res) => {
 
