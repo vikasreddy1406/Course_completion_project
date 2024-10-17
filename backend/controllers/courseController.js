@@ -6,7 +6,6 @@ import { CourseProgress } from '../models/CourseProgress.js';
 import { ModuleProgress } from '../models/ModuleProgress.js';
 import PDFDocument from 'pdfkit';
 import { Quiz } from '../models/Quiz.js';
-import { QuizProgress } from '../models/QuizProgress.js';
 
 const createCourse = async (req, res) => {
   try {
@@ -546,7 +545,6 @@ const submitQuiz = async (req, res) => {
     let score = 0;
     let totalQuestions = quiz.questions.length;
 
-
     // Calculate the score
     quiz.questions.forEach((question, index) => {
       const correctOption = question.options.find(opt => opt.is_correct);
@@ -559,16 +557,18 @@ const submitQuiz = async (req, res) => {
     const percentageScore = (score / totalQuestions) * 100;
     const isPassed = percentageScore > 50;
 
-    const quizProgress = new QuizProgress({
-      employee_id: employeeId,
-      course_id: courseId,
-      quiz_id: quizId,
-      score: percentageScore,
-      completed_at: new Date(),
-      is_passed: isPassed,
-    });
-
-    await quizProgress.save();
+    // Update or create course progress
+    const courseProgress = await CourseProgress.findOneAndUpdate(
+      { employee_id: employeeId, course_id: courseId },
+      {
+        $set: {
+          'quiz.score': percentageScore,
+          'quiz.completed_at': new Date(),
+          'quiz.is_passed': isPassed,
+        },
+      },
+      { new: true, upsert: true } // Create a new document if none exists
+    );
 
     res.status(201).json({ message: 'Quiz submitted', score: percentageScore, passed: isPassed });
   } catch (error) {

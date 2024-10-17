@@ -18,7 +18,19 @@ const courseProgressSchema = new mongoose.Schema({
   completed_at: {
     type: Date,
   },
+  quiz: {
+    score: {
+      type: Number,
+      default: 0,
+    },
+    completed_at: {
+      type: Date,
+    },
+    is_passed: {
+      type: Boolean,
+      default: false,
+    },
+  },
 });
 
 export const CourseProgress = mongoose.model('CourseProgress', courseProgressSchema);
-
