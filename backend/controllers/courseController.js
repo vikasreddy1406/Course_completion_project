@@ -5,6 +5,8 @@ import { User } from '../models/User.js';
 import { CourseProgress } from '../models/CourseProgress.js';
 import { ModuleProgress } from '../models/ModuleProgress.js';
 import PDFDocument from 'pdfkit';
+import { Quiz } from '../models/Quiz.js';
+import { QuizProgress } from '../models/QuizProgress.js';
 
 const createCourse = async (req, res) => {
   try {
@@ -514,6 +516,85 @@ const getEmployeeCourses = async (req, res) => {
   }
 };
 
+ const createQuizForCourse = async (req, res) => {
+
+
+  const courseId = req.params.courseId;
+  const {questions} = req.body;
+
+  try {
+    const quiz = new Quiz({
+      course_id: courseId,
+      questions: questions,
+    });
+
+    await quiz.save();
+    res.status(201).json({ message: 'Quiz created successfully', quiz });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating quiz', error });
+  }
+};
+
+
+const submitQuiz = async (req, res) => {
+  const employeeId = req.user._id;
+  const courseId = req.params.courseId;
+  const { quizId, answers } = req.body;
+
+  try {
+    const quiz = await Quiz.findById(quizId);
+    let score = 0;
+    let totalQuestions = quiz.questions.length;
+
+
+    // Calculate the score
+    quiz.questions.forEach((question, index) => {
+      const correctOption = question.options.find(opt => opt.is_correct);
+      
+      if (answers[index] === correctOption.option_text) {
+        score += 1;
+      }
+    });
+
+    const percentageScore = (score / totalQuestions) * 100;
+    const isPassed = percentageScore > 50;
+
+    const quizProgress = new QuizProgress({
+      employee_id: employeeId,
+      course_id: courseId,
+      quiz_id: quizId,
+      score: percentageScore,
+      completed_at: new Date(),
+      is_passed: isPassed,
+    });
+
+    await quizProgress.save();
+
+    res.status(201).json({ message: 'Quiz submitted', score: percentageScore, passed: isPassed });
+  } catch (error) {
+    res.status(500).json({ message: 'Error submitting quiz', error });
+  }
+};
+
+
+
+const getQuiz = async (req, res) => {
+  const { courseId } = req.params;
+
+  try {
+    
+    const quizzes = await Quiz.find({ course_id: courseId });
+
+    if (!quizzes.length) {
+      return res.status(404).json({ message: 'No quizzes found for this course' });
+    }
+
+    res.status(200).json(quizzes);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching quizzes', error });
+  }
+};
+
 
 
   export {
@@ -530,4 +611,7 @@ const getEmployeeCourses = async (req, res) => {
   generateCertificate,
   getCourseStats,
   getEmployeeCourses,
+  createQuizForCourse,
+  submitQuiz,
+    getQuiz,
   }

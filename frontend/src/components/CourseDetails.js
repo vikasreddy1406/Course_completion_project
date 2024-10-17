@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import { useParams } from 'react-router-dom';
@@ -106,6 +107,11 @@ const CourseDetails = () => {
       <p dangerouslySetInnerHTML={{ __html: course.description }} className="text-gray-600 mb-4"></p> {/* Render HTML */}
    
           </div>
+          <Link to={`/quiz/${courseId}`}>
+                <Button className='bg-blue-500 text-white'>
+                  Take Quiz
+                </Button>
+              </Link>
         </div>
       </div>
        </Card>

@@ -8,6 +8,7 @@ import {
   updateCourseDetails,
   getCourseStats,
   getEmployeeCourses,
+  createQuizForCourse,
 } from "../controllers/courseController.js";
 import { verifyJWT, verifyAdmin } from "../middlewares/authMiddleware.js";
 import { getAllEmployees } from "../controllers/userController.js";
@@ -24,5 +25,6 @@ router.route("/assign-courses/:courseId/assign").post(verifyJWT, verifyAdmin, as
 router.route("/performance").get(verifyJWT, verifyAdmin, getEmployeePerformance);
 router.route("/course/:courseId/stats").get(verifyJWT, verifyAdmin, getCourseStats)
 router.route("/employee-courses").get( getEmployeeCourses);
+router.route("/create-quiz/:courseId").post(createQuizForCourse)
 
 export default router;
