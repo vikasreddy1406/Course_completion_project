@@ -256,6 +256,9 @@ const AdminHome = () => {
             <button type='button' onClick={() => setShowAssignCourseModal(true)} className="text-white bg-[#0369a1] focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ml-2 mb-2">
               Assign Courses
             </button>
+            <button type='button' onClick={() => navigate('/create-quiz')} className="text-white bg-[#0369a1] focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ml-2 mb-2">
+              Create Quiz
+            </button>
             <button type='button' onClick={() => navigate('/create-learningpath')} className="text-white bg-[#0369a1] focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ml-2 mb-2">
               Create Learning-Path
             </button>

@@ -23,6 +23,7 @@ import EmployeeLearningPath from "./components/EmployeeLearningPath.js";
 import AdminLearningPathsDisplay from "./components/AdminLearningPathsDisplay.js";
 import AdminCourseRecommendation from "./components/CourseRecommendation.js";
 import QuizPage from "./components/QuizPage.js";
+import CreateQuiz from "./components/CreateQuiz.js";
 
 
 
@@ -64,6 +65,7 @@ function App() {
           <Route path="/admin/learning-path" element={<AdminLearningPathsDisplay />} />
           <Route path="/course-recommend" element={<AdminCourseRecommendation />} />
           <Route path="/quiz/:courseId" element={<QuizPage />} />
+          <Route path="/create-quiz" element={<CreateQuiz />} />
         </Routes>
         <ToastContainer
           position="top-right"

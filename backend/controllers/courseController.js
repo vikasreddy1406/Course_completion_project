@@ -149,7 +149,7 @@ const getEmployeePerformance = async (req, res) => {
         designation: employee.designation, 
         total_courses_assigned: totalAssignedCourses,
         courses_completed: completedCourses,
-        performance_score: performance_score
+        performance_score: performance_score.toFixed(2)
       };
     }));
 
@@ -336,6 +336,7 @@ const getCourseCompletionStats = async (req, res) => {
 
     // Calculate completion rate
     const completionRate = totalCourses > 0 ? (completedCourses / totalCourses) * 100 : 0;
+
 
     res.status(200).json({
       totalCourses,
@@ -530,12 +531,22 @@ const getEmployeeCourses = async (req, res) => {
   }
 };
 
+const getCoursesWithoutQuiz = async (req, res) => {
+  try {
+    // Fetch all course IDs that already have a quiz
+    const coursesWithQuiz = await Quiz.distinct('course_id');
 
+    // Find courses that are not in the list of course IDs with a quiz
+    const coursesWithoutQuiz = await Course.find({ _id: { $nin: coursesWithQuiz } });
+
+    res.status(200).json(coursesWithoutQuiz);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching courses without quiz', error });
+  }
+};
 
 
  const createQuizForCourse = async (req, res) => {
-
-
   const courseId = req.params.courseId;
   const {questions} = req.body;
 
@@ -632,4 +643,5 @@ const getQuiz = async (req, res) => {
   createQuizForCourse,
   submitQuiz,
     getQuiz,
+    getCoursesWithoutQuiz,
   }

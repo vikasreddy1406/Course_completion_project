@@ -4,6 +4,8 @@ import Cookie from 'js-cookie';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Card } from 'flowbite-react';
 import { IoReturnDownBack } from 'react-icons/io5';
+import tick from "../assests/tick.jpg"
+import cross from "../assests/cross.png"
 
 const QuizPage = () => {
   const { courseId } = useParams();
@@ -70,27 +72,29 @@ const QuizPage = () => {
 
   if (quizCompleted) {
     return (
-      <div className="p-6 max-w-7xl mx-auto text-center">
+      <div className="p-6  mx-auto text-center max-w-xl">
         <Card className="mb-5 shadow-lg">
           {score >= passingScore ? (
-            <div>
+            <div className=' flex justify-center flex-col items-center gap-4'>
+              <img src={tick} className='w-52 h-44' alt="" />
               <h2 className="text-2xl font-bold text-green-600">Congratulations, you passed!</h2>
-              <p>Your Score: {score.toFixed(2)}</p>
+              <p><span className='score font-bold text-green-600'>Your Score:</span>  {score.toFixed(2)}</p>
             </div>
           ) : (
-            <div>
+            <div className=' flex justify-center flex-col items-center gap-4'>
+                <img src={cross} className='w-52 h-44' alt="" />
               <h2 className="text-2xl font-bold text-red-600">Sorry, you failed.</h2>
-              <p>Your Score: {score.toFixed(2)}</p>
+              <p><span className=' font-extrabold text-red-600'>Your Score:</span>  {score.toFixed(2)}</p>
             </div>
           )}
-          <Button className='mt-4 text-white bg-blue-500 hover:bg-blue-700' onClick={handleBackClick}>Back to Course Details</Button>
+          <Button className='mt-4 text-white bg-[#008080] hover:bg-[#105858]' onClick={handleBackClick}>Back to Course Details</Button>
         </Card>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6  max-w-4xl mx-auto">
       <Card className="mb-5 shadow-lg relative">
         {/* Back Button */}
         <button
@@ -101,24 +105,24 @@ const QuizPage = () => {
         </button>
         <h2 className="text-3xl font-bold mb-6 text-center">Quiz</h2>
         {quiz.questions.map((question, questionIndex) => (
-          <div key={questionIndex} className="mb-6">
-            <h3 className="text-lg font-semibold mb-2">{question.question_text}</h3>
+          <div key={questionIndex} className="mb-2 bg-[#ddd] rounded-sm ">
+            <h3 className="text-lg bg-[#008080] text-white font-semibold mb-2 px-2 py-1 rounded-sm">{questionIndex+1}. {question.question_text} ?</h3>
             {question.options.map((option) => (
-              <div key={option._id} className="flex items-center mb-2">
+              <div key={option._id} className="answers flex items-center border-b-2 border-gray-400 mb-2 px-2">
                 <input
                   type="radio"
                   name={`question-${questionIndex}`}
                   value={option.option_text}
                   checked={answers[questionIndex] === option.option_text}
                   onChange={() => handleAnswerChange(questionIndex, option)}
-                  className="mr-2"
+                  className="mr-2 "
                 />
                 <label>{option.option_text}</label>
               </div>
             ))}
           </div>
         ))}
-        <Button className='text-white bg-blue-500 hover:bg-blue-700' onClick={handleSubmitQuiz}>Submit Quiz</Button>
+        <Button className='text-white bg-[#008080] hover:bg-[#0d4e4e]' onClick={handleSubmitQuiz}>Submit Quiz</Button>
       </Card>
     </div>
   );

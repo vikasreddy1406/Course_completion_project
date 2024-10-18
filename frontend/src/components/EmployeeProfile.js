@@ -102,8 +102,8 @@ export default function EmployeeProfile() {
                 <td className="p-2 text-center">
                   <Tag value={course.status} severity={getSeverity(course.status)} />
                 </td>
-                <td className="p-2 text-center">{course.completion_percentage}%</td>
-                <td className="p-2 text-center">{course.quiz_score}</td>
+                <td className="p-2 text-center">{course.completion_percentage.toFixed(2)}%</td>
+                <td className="p-2 text-center">{course.quiz_score.toFixed(2)}</td>
                 <td className="p-2 text-center">{course.quiz_completed}</td>
               </tr>
             ))}
@@ -140,7 +140,7 @@ export default function EmployeeProfile() {
             <p className="text-gray-600"><span className='font-semibold text-black'>Designation:</span> {employee.designation}</p>
             <p className="text-gray-600"><span className='font-semibold text-black'>Total Courses:</span> {employee.totalCourses}</p>
             <p className="text-gray-600"><span className='font-semibold text-black'>Completed Courses:</span> {employee.completedCourses}</p>
-            <p className="text-gray-600"><span className='font-semibold text-black'>Performance Score:</span> {employee.performanceScore}%</p>
+            <p className="text-gray-600"><span className='font-semibold text-black'>Performance Score:</span> {employee.performanceScore.toFixed(2)}%</p>
           </div>
         </div>
         <div className='w-[5%]'></div>
