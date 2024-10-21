@@ -10,13 +10,13 @@ import { Quiz } from '../models/Quiz.js';
 const createCourse = async (req, res) => {
   try {
     const { title, description, tag } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : ''; // Handle the uploaded image
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : ''; 
 
     const newCourse = new Course({
       title,
       description,
       tag,
-      imageUrl, // Store the image URL
+      imageUrl, 
     });
 
     await newCourse.save();
@@ -202,17 +202,17 @@ const getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.params;
 
-    // Fetch course and modules
+
     const course = await Course.findById(courseId);
     const modules = await CourseModule.find({ course_id: courseId });
 
-    // Fetch module progress for the employee and the specific course
+
     const moduleProgress = await ModuleProgress.find({
       employee_id: req.user._id,
       course_id: courseId,
     });
 
-    // Check completion status for each module
+
     const modulesWithCompletion = modules.map(module => {
       const progress = moduleProgress.find(mp => String(mp.module_id) === String(module._id));
       return {
@@ -221,19 +221,18 @@ const getCourseDetails = async (req, res) => {
       };
     });
 
-    // Calculate completion percentage based on module completion
     const completedModules = moduleProgress.filter(mp => mp.is_completed).length;
     const totalModules = modules.length;
     const completionPercentage = totalModules > 0 ? (completedModules / totalModules) * 100 : 0;
 
-    // Find or create course progress entry and update completion percentage
+
     const progress = await CourseProgress.findOneAndUpdate(
       { employee_id: req.user._id, course_id: courseId },
       { completion_percentage: completionPercentage },
       { upsert: true, new: true }
     );
 
-    // Return course details along with quiz score and completion percentage
+
     res.status(200).json({
       course,
       modules: modulesWithCompletion,
@@ -254,11 +253,11 @@ const markModuleAsCompleted = async (req, res) => {
   try {
     const { courseId, moduleId } = req.params;
 
-    // Check if the module exists
+
     const module = await CourseModule.findById(moduleId);
     if (!module) return res.status(404).json({ message: 'Module not found' });
 
-    // Check if the employee has already completed this module
+
     let moduleProgress = await ModuleProgress.findOne({
       employee_id: req.user._id,
       course_id: courseId,
@@ -266,7 +265,7 @@ const markModuleAsCompleted = async (req, res) => {
     });
 
     if (!moduleProgress) {
-      // Create a new progress record if none exists
+      
       moduleProgress = new ModuleProgress({
         employee_id: req.user._id,
         course_id: courseId,
@@ -275,14 +274,14 @@ const markModuleAsCompleted = async (req, res) => {
         completed_at: new Date(),
       });
     } else {
-      // If progress exists, update it
+      
       moduleProgress.is_completed = true;
       moduleProgress.completed_at = new Date();
     }
 
     await moduleProgress.save();
 
-    // Calculate updated course completion percentage for the employee
+
     const allModules = await CourseModule.find({ course_id: courseId });
     const completedModules = await ModuleProgress.find({
       employee_id: req.user._id,
@@ -292,7 +291,7 @@ const markModuleAsCompleted = async (req, res) => {
 
     const completionPercentage = (completedModules.length / allModules.length) * 100;
 
-    // Update course progress
+
     await CourseProgress.findOneAndUpdate(
       { employee_id: req.user._id, course_id: courseId },
       { completion_percentage: completionPercentage },
@@ -315,17 +314,17 @@ const getCourseCompletionStats = async (req, res) => {
   try {
     const employeeId = req.user._id;
 
-    // Fetch all courses assigned to the employee
+
     const assignedCourses = await CourseAssignment.find({ employee_id: employeeId }).select('course_id');
     const totalCourses = assignedCourses.length;
 
-    // Fetch course progress for the employee
+
     const courseProgress = await CourseProgress.find({ employee_id: employeeId }).select('completion_percentage course_id');
 
-    // Map of course_id to its completion percentage for quick lookup
+
     const progressMap = new Map(courseProgress.map(p => [p.course_id.toString(), p.completion_percentage]));
 
-    // Count completed and total courses
+  
     let completedCourses = 0;
     assignedCourses.forEach((assignment) => {
       const courseIdStr = assignment.course_id.toString();
@@ -334,7 +333,7 @@ const getCourseCompletionStats = async (req, res) => {
       }
     });
 
-    // Calculate completion rate
+   
     const completionRate = totalCourses > 0 ? (completedCourses / totalCourses) * 100 : 0;
 
 
@@ -467,11 +466,11 @@ const getCourseStats = async (req, res) => {
 
 const getEmployeeCourses = async (req, res) => {
   try {
-    // Fetch all employees
+  
     const employees = await User.find({ role: 'employee' }).select('_id name email designation');
 
     const employeeCourses = await Promise.all(employees.map(async (employee) => {
-      // Find the courses assigned to the employee
+      
       const assignments = await CourseAssignment.find({ employee_id: employee._id }).populate('course_id');
 
       const coursesWithProgress = await Promise.all(assignments.map(async (assignment) => {
@@ -483,7 +482,7 @@ const getEmployeeCourses = async (req, res) => {
           is_completed: true
         });
 
-        // Fetch course progress, including quiz details
+        
         const courseProgress = await CourseProgress.findOne({
           employee_id: employee._id,
           course_id: assignment.course_id._id
@@ -492,7 +491,7 @@ const getEmployeeCourses = async (req, res) => {
         const completionPercentage = courseProgress ? courseProgress.completion_percentage : 0;
         const courseStatus = completedModules === totalModules ? 'Completed' : 'In Progress';
 
-        // Include quiz details
+    
         const quizScore = courseProgress && courseProgress.quiz ? courseProgress.quiz.score : null;
         const quizCompleted = courseProgress && courseProgress.quiz ? courseProgress.quiz.is_passed : false;
 
@@ -505,7 +504,7 @@ const getEmployeeCourses = async (req, res) => {
           status: courseStatus,
           completion_percentage: completionPercentage,
           quiz_score: quizScore !== null ? quizScore : 0, 
-          quiz_completed: quizCompleted ? 'Yes' : 'No'  // Indicate if the quiz is completed
+          quiz_completed: quizCompleted ? 'Yes' : 'No'  
         };
       }));
 
@@ -533,10 +532,10 @@ const getEmployeeCourses = async (req, res) => {
 
 const getCoursesWithoutQuiz = async (req, res) => {
   try {
-    // Fetch all course IDs that already have a quiz
+  
     const coursesWithQuiz = await Quiz.distinct('course_id');
 
-    // Find courses that are not in the list of course IDs with a quiz
+ 
     const coursesWithoutQuiz = await Course.find({ _id: { $nin: coursesWithQuiz } });
 
     res.status(200).json(coursesWithoutQuiz);
@@ -574,7 +573,7 @@ const submitQuiz = async (req, res) => {
     let score = 0;
     let totalQuestions = quiz.questions.length;
 
-    // Calculate the score
+ 
     quiz.questions.forEach((question, index) => {
       const correctOption = question.options.find(opt => opt.is_correct);
       
@@ -586,7 +585,6 @@ const submitQuiz = async (req, res) => {
     const percentageScore = (score / totalQuestions) * 100;
     const isPassed = percentageScore > 50;
 
-    // Update or create course progress
     const courseProgress = await CourseProgress.findOneAndUpdate(
       { employee_id: employeeId, course_id: courseId },
       {
@@ -596,7 +594,7 @@ const submitQuiz = async (req, res) => {
           'quiz.is_passed': isPassed,
         },
       },
-      { new: true, upsert: true } // Create a new document if none exists
+      { new: true, upsert: true } 
     );
 
     res.status(201).json({ message: 'Quiz submitted', score: percentageScore, passed: isPassed });
