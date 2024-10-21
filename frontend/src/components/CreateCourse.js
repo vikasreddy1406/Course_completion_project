@@ -20,7 +20,7 @@ const CreateCourse = () => {
   const [moduleAdded, setModuleAdded] = useState(0);
   const navigate = useNavigate();
   
-  // New states for quiz creation
+ 
   const [questions, setQuestions] = useState([]);
   const [questionText, setQuestionText] = useState('');
   const [options, setOptions] = useState([
@@ -33,12 +33,12 @@ const CreateCourse = () => {
 
   let { showAlert } = useContext(alertContext);
 
-  // Handle image upload
+  
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
 
-  // Handle course creation
+ 
   const handleCreateCourse = async () => {
     if (!newCourse.title || !newCourse.description || !newCourse.tag) {
       showAlert('Please fill out all fields before creating the course');
@@ -106,7 +106,7 @@ const CreateCourse = () => {
     navigate('/admin');
   };
 
-  // Quiz handling functions
+
   const handleAddQuestion = () => {
     if (!questionText || correctAnswerIndex === null || correctAnswerIndex === undefined) {
       showAlert('Please provide a question and the correct answer.');
@@ -117,7 +117,7 @@ const CreateCourse = () => {
       question_text: questionText,
       options: options.map((option, index) => ({
         option_text: option.option_text,
-        is_correct: index === correctAnswerIndex,  // Mark the correct answer
+        is_correct: index === correctAnswerIndex, 
       })),
     };
 

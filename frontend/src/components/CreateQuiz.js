@@ -22,7 +22,7 @@ const CreateQuiz = () => {
   const { showAlert } = useContext(alertContext);
 
   useEffect(() => {
-    // Fetch courses that don't have a quiz yet
+    
     const fetchCourses = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/admin/courses-without-quiz');

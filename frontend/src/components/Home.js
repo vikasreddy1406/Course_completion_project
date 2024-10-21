@@ -12,10 +12,10 @@ import EmployeeLearningPath from './EmployeeLearningPath';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
-  const [filteredCourses, setFilteredCourses] = useState([]); // New state for filtered courses
+  const [filteredCourses, setFilteredCourses] = useState([]); 
   const [completionStats, setCompletionStats] = useState({ totalCourses: 0, completedCourses: 0, completionRate: 0 });
   const [loading, setLoading] = useState(true);
-  const [selectedTag, setSelectedTag] = useState('All'); // State to track the selected tag
+  const [selectedTag, setSelectedTag] = useState('All'); 
   const [tags, setTags] = useState([
     'All', 'Web Development', 'Data Engineering', 'Data Science', 
     'Generative AI', 'DevOps', 'Cybersecurity', 
@@ -41,7 +41,7 @@ const Home = () => {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         });
         setCourses(response.data);
-        setFilteredCourses(response.data); // Initially, show all courses
+        setFilteredCourses(response.data); 
       } catch (error) {
         console.error('Error fetching assigned courses:', error);
       }
@@ -66,21 +66,21 @@ const Home = () => {
     loadData();
   }, []);
 
-  // Function to handle certificate download
+  
   const downloadCertificate = async (courseId) => {
     try {
       const decodedToken = jwtDecode(Cookie.get('accessToken'));
       const employeeId = decodedToken._id;
       const response = await axios.get(`http://localhost:4000/api/user/certificate/${employeeId}/${courseId}`, {
         headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
-        responseType: 'blob', // Set to blob to handle binary data (PDF)
+        responseType: 'blob', 
       });
 
-      // Create a link to download the PDF
+    
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'certificate.pdf'); // Filename for the certificate
+      link.setAttribute('download', 'certificate.pdf'); 
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -135,7 +135,7 @@ const Home = () => {
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold mx-auto ">Courses</h2>
-        {/* Dropdown to filter by tags */}
+        
         <div className='mr-44'>
             <label htmlFor="" className='text-xl'>Select tag </label>
           <select
@@ -152,7 +152,7 @@ const Home = () => {
 
 
       <div className='pl-16'>
-        <div className="flex flex-wrap gap-20"> {/* Adjusted gap here */}
+        <div className="flex flex-wrap gap-20"> 
           {filteredCourses.length === 0 ? (
             <p>No courses available for the selected tag.</p>
           ) : (

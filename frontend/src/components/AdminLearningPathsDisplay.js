@@ -44,13 +44,13 @@ export default function AdminLearningPathsDisplay() {
             const diagram = createMermaidDiagram(learningPaths);
             setMermaidDiagram(diagram);
         } else {
-            setMermaidDiagram(''); // Clear diagram if no learning paths
+            setMermaidDiagram(''); 
         }
     }, [learningPaths]);
 
     useEffect(() => {
         if (mermaidDiagram) {
-            mermaid.contentLoaded(); // Update the diagram whenever it changes
+            mermaid.contentLoaded(); 
         }
     }, [mermaidDiagram]);
 

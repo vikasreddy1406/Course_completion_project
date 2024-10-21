@@ -46,18 +46,14 @@ export default function Login() {
 
             if (response.status === 200) {
                 const { accessToken, loggedInUser } = response.data;
-
-                // Save user details in cookies
                 Cookie.set('accessToken', accessToken);
                 Cookie.set('role', loggedInUser.role);
                 
-                // Decode JWT token to extract role
                 const decodedToken = jwtDecode(accessToken);
                 const role = decodedToken.role;
 
                 showAlert('Login Successful');
 
-                // Redirect based on role
                 if (role === 'admin') {
                     navigate('/admin');
                 } 

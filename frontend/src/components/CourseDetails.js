@@ -15,8 +15,8 @@ const CourseDetails = () => {
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [completionPercentage, setCompletionPercentage] = useState(0);
-  const [openAccordionIndex, setOpenAccordionIndex] = useState(null); // State to manage which accordion is open
-  const [quiz, setQuiz] = useState(null); // State to manage quiz details
+  const [openAccordionIndex, setOpenAccordionIndex] = useState(null); 
+  const [quiz, setQuiz] = useState(null); 
 
   let navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const CourseDetails = () => {
         setCourse(response.data.course);
         setModules(response.data.modules);
         calculateCompletionPercentage(response.data.modules);
-        setQuiz(response.data.quiz); // Set quiz data
+        setQuiz(response.data.quiz); 
       } catch (error) {
         console.error('Error fetching course details:', error);
       } finally {
@@ -62,7 +62,7 @@ const CourseDetails = () => {
     }
   };
 
-  // Function to toggle the accordion
+
   const toggleAccordion = (index) => {
     setOpenAccordionIndex(openAccordionIndex === index ? null : index);
   };
@@ -73,16 +73,16 @@ const CourseDetails = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <Card className="mb-5 shadow-lg relative"> {/* Make the card relative for absolute positioning */}
-        {/* Back Button */}
+      <Card className="mb-5 shadow-lg relative"> 
+   
         <button
           className="absolute top-3 right-3 bg-red-500 text-xl text-white p-2 rounded-sm hover:bg-red-600"
-          onClick={() => navigate("/")} // Navigate to the home page
+          onClick={() => navigate("/")} 
         >
           <IoReturnDownBack />
         </button>
 
-        <div className='flex flex-row-reverse justify-between mt-6'> {/* Added margin-top for space between image and button */}
+        <div className='flex flex-row-reverse justify-between mt-6'> 
           <div className='w-full'>
             <img
               className="rounded-t-lg h-64 mt-8 w-full object-cover"
@@ -103,7 +103,7 @@ const CourseDetails = () => {
                 </div>
               </div>
               <p className='font-bold text-lg'>About Course:</p>
-              <p dangerouslySetInnerHTML={{ __html: course.description }} className="text-gray-600 mb-4"></p> {/* Render HTML */}
+              <p dangerouslySetInnerHTML={{ __html: course.description }} className="text-gray-600 mb-4"></p> 
             </div>
 
             {quiz ? (
@@ -144,8 +144,8 @@ const CourseDetails = () => {
               <button
                 type="button"
                 className="flex items-center justify-between w-full p-5 font-medium text-gray-500 border-2 border-gray-200 rounded-t-xl hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
-                onClick={() => toggleAccordion(index)} // Toggle accordion on click
-                aria-expanded={openAccordionIndex === index} // Set aria attribute for accessibility
+                onClick={() => toggleAccordion(index)} 
+                aria-expanded={openAccordionIndex === index} 
               >
                 <div className='flex justify-between w-full'>
                   <div className='text-left text-black font-semibold text-xl'>
@@ -168,10 +168,10 @@ const CourseDetails = () => {
               </button>
             </h2>
             <div
-              className={`p-5 border-2 border-gray-200 ${openAccordionIndex === index ? '' : 'hidden'}`} // Show/hide content based on state
+              className={`p-5 border-2 border-gray-200 ${openAccordionIndex === index ? '' : 'hidden'}`} 
               aria-labelledby={`accordion-collapse-heading-${index}`}
             >
-              <p dangerouslySetInnerHTML={{ __html: module.module_content }} className="text-gray-600 mb-2"></p> {/* Render HTML */}
+              <p dangerouslySetInnerHTML={{ __html: module.module_content }} className="text-gray-600 mb-2"></p> 
               {!module.is_completed ? (
                 <Button className='bg-blue-500 text-white' onClick={() => markAsCompleted(module._id)}>Mark as Read</Button>
               ) : (

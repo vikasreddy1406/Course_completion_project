@@ -10,7 +10,6 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ message: "Some fields are missing" });
         }
 
-        // Check if the user already exists by email
         const existedUser = await User.findOne({ email });
         if (existedUser) {
             return res.status(201).json({ message: "User with this email already exists" }); 
@@ -29,7 +28,7 @@ const registerUser = async (req, res) => {
         
         await user.save();
 
-        // Exclude password from the response
+       
         const createdUser = await User.findById(user._id).select("-password");
 
         if (!createdUser) {

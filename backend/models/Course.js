@@ -25,7 +25,7 @@ const courseSchema = new mongoose.Schema({
     required: true,
   },
   imageUrl: {
-    type: String, // URL of the uploaded image
+    type: String, 
   },
 });
 

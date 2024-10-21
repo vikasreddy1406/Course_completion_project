@@ -36,7 +36,7 @@ const assignLearningPathToEmployee = async (req, res) => {
     try {
         const { selectedEmployees, selectedLearningPaths } = req.body;
 
-        // Iterate over each employee and assign all selected learning paths
+        
         const assignments = selectedEmployees.map(async (employeeId) => {
             const employeeAssignments = selectedLearningPaths.map(async (learningPathId) => {
                 const assignment = new EmployeeLearningPath({
@@ -46,10 +46,10 @@ const assignLearningPathToEmployee = async (req, res) => {
                 await assignment.save();
                 return assignment;
             });
-            return Promise.all(employeeAssignments);  // Ensure all paths are assigned for this employee
+            return Promise.all(employeeAssignments);  
         });
 
-        // Wait for all assignments to complete
+       
         await Promise.all(assignments);
 
         res.status(201).json({ message: 'Learning paths assigned successfully' });
@@ -63,7 +63,7 @@ const getEmployeeLearningPath = async (req, res) => {
     try {
         const { employeeId } = req.params;
 
-        // Get all learning paths assigned to the employee
+       
         const employeeLearningPaths = await EmployeeLearningPath.find({ employee: employeeId })
             .populate({
                 path: 'learningPath',
@@ -74,10 +74,10 @@ const getEmployeeLearningPath = async (req, res) => {
             employeeLearningPaths.map(async (employeeLearningPath) => {
                 const learningPath = employeeLearningPath.learningPath;
 
-                // Process each course in the learning path
+               
                 const coursesWithProgress = await Promise.all(
                     learningPath.courses.map(async (course) => {
-                        // Check if this course is assigned to the employee
+                        
                         const courseAssignment = await CourseAssignment.findOne({
                             employee_id: employeeId,
                             course_id: course._id,
@@ -85,30 +85,30 @@ const getEmployeeLearningPath = async (req, res) => {
 
                         let courseCompletion = 0;
 
-                        // Fetch the completion percentage if the course is assigned
+                       
                         if (courseAssignment) {
                             const courseProgress = await CourseProgress.findOne({
                                 employee_id: employeeId,
                                 course_id: course._id,
                             });
 
-                            // Use the completion percentage from CourseProgress if available
+                            
                             if (courseProgress) {
                                 courseCompletion = courseProgress.completion_percentage;
                             }
                         }
 
-                        // Return course details and completion percentage
+                        
                         return {
                             title: course.title,
                             duration: course.duration,
                             completionPercentage: courseCompletion,
-                            assigned: !!courseAssignment, // True if course is assigned
+                            assigned: !!courseAssignment, 
                         };
                     })
                 );
 
-                // Return learning path details along with the course details
+               
                 return {
                     learningPathTitle: learningPath.title,
                     description: learningPath.description,

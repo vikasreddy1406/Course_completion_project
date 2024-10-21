@@ -28,11 +28,11 @@ const AdminCourseRecommendation = () => {
     fetchEmployees();
   }, []);
 
-  // Handle employee selection
+ 
   const handleEmployeeSelect = async (e) => {
     setSelectedEmployee(e.target.value);
     setRecommendedCourses([]);
-    setAssignedCourses(new Set()); // Reset assigned courses when a new employee is selected
+    setAssignedCourses(new Set()); 
     if (e.target.value) {
       setLoading(true);
       try {
@@ -47,17 +47,16 @@ const AdminCourseRecommendation = () => {
     }
   };
 
-  // Assign course to employee
   const handleAssignCourse = async (courseId) => {
     try {
       await axios.post(
         `http://localhost:4000/api/admin/assign-courses/${courseId}/assign`,
-        { employee_ids: [selectedEmployee] }, // Assign to the selected employee
+        { employee_ids: [selectedEmployee] },
         {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         }
       );
-      setAssignedCourses((prev) => new Set(prev).add(courseId)); // Add courseId to assignedCourses set
+      setAssignedCourses((prev) => new Set(prev).add(courseId)); 
       showAlert('Course assigned successfully');
     } catch (error) {
       console.error('Error assigning course:', error);
@@ -97,10 +96,10 @@ const AdminCourseRecommendation = () => {
           <ul className="list-disc pl-5 space-y-2">
             {recommendedCourses.map((course) => (
               <li key={course.course_id} className="text-gray-700 border-b-2 pb-4 flex justify-between items-center">
-                {course.course_title} {/* Display course title */}
+                {course.course_title} 
                 <button
                   onClick={() => handleAssignCourse(course.course_id)}
-                  disabled={assignedCourses.has(course.course_id)} // Disable button if course is assigned
+                  disabled={assignedCourses.has(course.course_id)} 
                   className={`ml-4 px-4 py-2 text-white rounded ${assignedCourses.has(course.course_id) ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'}`}
                 >
                   {assignedCourses.has(course.course_id) ? 'Assigned' : 'Assign'}

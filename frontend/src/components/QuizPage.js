@@ -15,7 +15,7 @@ const QuizPage = () => {
   const [score, setScore] = useState(null);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [quizNotFound, setQuizNotFound] = useState(false);
-  const passingScore = 50; // Set the passing score threshold
+  const passingScore = 50; 
 
   useEffect(() => {
     const fetchQuiz = async () => {
