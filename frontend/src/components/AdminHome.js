@@ -13,7 +13,7 @@ import { Tag } from 'primereact/tag'
 import EmployeePerformance from './EmployeePerformance';
 import AdminLearningPaths from './AdminLearningPaths';
 
-// Register necessary components for Chart.js
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AdminHome = () => {
@@ -442,36 +442,7 @@ const AdminHome = () => {
                   Assign Course
                 </button> 
 
-                {/* <div className="mb-4">
-                  <h3 className="text-lg text-gray-900 dark:text-white">Select Employees</h3>
-                  {employees && employees.length > 0 ? (
-                    employees.map(employee => (
-                      <div key={employee._id} className="flex items-center mb-2">
-                        <input
-                          id={employee._id}
-                          type="checkbox"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 focus:ring-2 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                          // Check if the employee is selected
-                          checked={selectedEmployees.includes(employee._id)}
-                          onChange={() => handleCheckboxChange(employee._id)} // Handle checkbox change
-                        />
-                        <label htmlFor={employee._id} className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
-                          {employee.name} - {employee.designation}
-                        </label>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No employees available to assign courses.</p>
-                  )}
-                </div> */}
-
-                {/* <button
-                  onClick={handleAssignCourse}
-                  type="button"
-                  className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Assign Course
-                </button> */}
+                
               </form>
             </div>
           </div>
