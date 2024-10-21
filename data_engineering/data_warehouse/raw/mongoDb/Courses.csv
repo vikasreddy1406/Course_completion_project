@@ -1,0 +1,13 @@
+_id,title,description,tag,imageUrl,created_at,__v,duration,modules
+66ffae1301112f523e6dac0b,HTML,<p>HTML is the standard markup language for Web pages.</p><p>With HTML you can create your own Website.</p>,Web Development,/uploads/1728032275556-download.jfif,2024-10-04 08:57:55.560,0,5.0,2.0
+6702683b8b415e1ee1ae0377,CSS,<p>About css</p>,Web Development,,2024-10-06 10:36:43.708,0,2.0,2.0
+670269c08b415e1ee1ae040e,Java Script,<p>about js</p>,Web Development,,2024-10-06 10:43:12.281,0,5.0,2.0
+67026bdb8b415e1ee1ae04af,Web Scraping,<p>to get data from websites</p>,Data Engineering,,2024-10-06 10:52:11.055,0,4.0,2.0
+67026c1e8b415e1ee1ae04fe,Advanced SQL,<p>structured query languauge</p>,Data Engineering,,2024-10-06 10:53:18.518,0,3.0,2.0
+67026c638b415e1ee1ae054d,Azure data factory,<p>about adf</p>,Data Engineering,,2024-10-06 10:54:27.075,0,3.0,2.0
+67036489a4a675180404ca9f,Docker,<p>about docer</p>,DevOps,,2024-10-07 04:33:13.107,0,6.0,2.0
+67036772a4a675180404cd57,kUBERNETES,<p>aabout kubernetes</p>,DevOps,,2024-10-07 04:45:38.596,0,5.0,2.0
+670d05fee115d4be8021793f,DBT,<p>about dbt</p>,Data Engineering,/uploads/1728906750377-de.jpg,2024-10-14 11:52:30.387,0,3.0,2.0
+6710ee55c41538277220af11,ML,<p>ewfefr</p>,Data Science,,2024-10-17 11:00:37.999,0,,
+6710f54105b53f25781e648e,frfervrf,<p>rfgtrfbtg</p>,Data Science,,2024-10-17 11:30:09.370,0,4.0,2.0
+6711523cad28e6f84a4fa84b,Chat GPT,<p>ergbrfhbrfhbt</p>,Generative AI,,2024-10-17 18:06:52.656,0,,

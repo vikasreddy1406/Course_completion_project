@@ -1,0 +1,13 @@
+_id,name,email,password,role,designation,performance_score,created_at,__v
+66ffacd84db5619d93044e5f,Admin,admin@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,admin,Management,0,2024-10-04 08:52:40.840,0
+66ffada401112f523e6dabeb,Vikas,vikas@gmail.com,$2b$10$EUZZAP6SiyeDXyFX.m7WaO7WZhjULn9SeiGTkkKwcUmP3FJdiOnJy,employee,Web Developer,0,2024-10-04 08:56:04.641,0
+66ffbf2c016d5542daee3f00,Sai,sai@gmail.com,$2b$10$k2E.65VV1jfb2ythYmg46.n94wlUN91Dd2U7QJgrpxYuYOMytweK2,employee,Data Engineer,0,2024-10-04 10:10:52.259,0
+670ce3905a9daf534693e064,Anjali,anjali@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,Data Engineer,0,2024-10-14 09:25:36.243,0
+670ce3905a9daf534693e065,Rohit,rohit@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,Frontend Developer,0,2024-10-14 09:25:36.243,0
+670ce3905a9daf534693e066,Neha,neha@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,Backend Developer,0,2024-10-14 09:25:36.243,0
+670ce3905a9daf534693e067,Amit,amit@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,Full Stack Developer,0,2024-10-14 09:25:36.243,0
+670ce3905a9daf534693e068,Sonia,sonia@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,UI/UX Designer,0,2024-10-14 09:25:36.243,0
+670ce3905a9daf534693e069,Rahul,rahul@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,Project Manager,0,2024-10-14 09:25:36.243,0
+670ce3905a9daf534693e06a,Deepa,deepa@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,Quality Analyst,0,2024-10-14 09:25:36.243,0
+670ce3905a9daf534693e06b,Manish,manish@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,DevOps Engineer,0,2024-10-14 09:25:36.243,0
+670ce3905a9daf534693e06c,Pooja,pooja@gmail.com,$2b$10$T1wDs3gDd3GniAZIYRssYOb1bKU7blma03eFnThQITKhuxr5hsRbO,employee,Database Administrator,0,2024-10-14 09:25:36.243,0

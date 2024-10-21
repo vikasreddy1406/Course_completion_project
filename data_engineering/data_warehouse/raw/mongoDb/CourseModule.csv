@@ -1,0 +1,26 @@
+_id,course_id,module_title,module_content,module_duration,is_completed,created_at,__v
+66ffae3301112f523e6dac0e,66ffae1301112f523e6dac0b,HTML Introduction,"<h2>What is HTML?</h2><ul><li>HTML stands for Hyper Text Markup Language</li><li>HTML is the standard markup language for creating Web pages</li><li>HTML describes the structure of a Web page</li><li>HTML consists of a series of elements</li><li>HTML elements tell the browser how to display the content</li><li>HTML elements label pieces of content such as ""this is a heading"", ""this is a paragraph"", ""this is a link"", etc.</li></ul>",2,False,2024-10-04 08:58:27.525,0
+66ffae5401112f523e6dac11,66ffae1301112f523e6dac0b,HTML Elements,<h2>HTML Elements</h2><p>The HTML <strong>element</strong> is everything from the start tag to the end tag:</p><p>&lt;tagname&gt;Content goes here...&lt;/tagname&gt;</p><p>Examples of some HTML elements:</p><p>&lt;h1&gt;My First Heading&lt;/h1&gt;</p><p>&lt;p&gt;My first paragraph.&lt;/p&gt;</p>,3,False,2024-10-04 08:59:00.544,0
+6702684d8b415e1ee1ae037a,6702683b8b415e1ee1ae0377,intro,<p>2 types of css</p>,1,False,2024-10-06 10:37:01.024,0
+670268698b415e1ee1ae037d,6702683b8b415e1ee1ae0377,types,<ul><li>inline css<br>internal css<br>external css</li></ul>,1,False,2024-10-06 10:37:29.705,0
+670269cb8b415e1ee1ae0411,670269c08b415e1ee1ae040e,Intro,<p>Javascript</p>,2,False,2024-10-06 10:43:23.966,0
+670269df8b415e1ee1ae0414,670269c08b415e1ee1ae040e,DOM,<p>document object model</p>,3,False,2024-10-06 10:43:43.746,0
+67026bee8b415e1ee1ae04b2,67026bdb8b415e1ee1ae04af,Intro,<p>about webscraping</p>,1,False,2024-10-06 10:52:30.427,0
+67026c048b415e1ee1ae04b5,67026bdb8b415e1ee1ae04af,Beautiful Soup,<p>about bs</p>,3,False,2024-10-06 10:52:52.050,0
+67026c3e8b415e1ee1ae0501,67026c1e8b415e1ee1ae04fe,sql basics,<p>basic sql</p>,1,False,2024-10-06 10:53:50.009,0
+67026c4d8b415e1ee1ae0504,67026c1e8b415e1ee1ae04fe,CTE,<p>common table expressions</p>,2,False,2024-10-06 10:54:05.353,0
+67026c718b415e1ee1ae0550,67026c638b415e1ee1ae054d,intro,<p>data&nbsp;</p>,1,False,2024-10-06 10:54:41.167,0
+67026c7c8b415e1ee1ae0553,67026c638b415e1ee1ae054d,Pipelines,<p>data flow</p>,2,False,2024-10-06 10:54:52.937,0
+67036495a4a675180404caa2,67036489a4a675180404ca9f,intro,<p>aBOUT DOCKER</p>,2,False,2024-10-07 04:33:25.440,0
+6703649ea4a675180404caa5,67036489a4a675180404ca9f,DOCKER 2,<p>ABOUT</p>,4,False,2024-10-07 04:33:34.535,0
+6703677ea4a675180404cd5a,67036772a4a675180404cd57,intro,<p>about kubernetes</p>,2,False,2024-10-07 04:45:50.932,0
+670367b8a4a675180404cd5d,67036772a4a675180404cd57,Documentation,"<p><a href=""https://kubernetes.io/docs/home/"">Kubernetes Documentation | Kubernetes</a></p>",3,False,2024-10-07 04:46:48.884,0
+670d088fe115d4be80217942,670d05fee115d4be8021793f,Introduction,"<p>Data Build Tool, commonly known as dbt, has gained recently significant popularity in the realm of data pipelines. Intrigued by its popularity, I have been exploring dbt lately.</p>",1,False,2024-10-14 12:03:27.390,0
+670d08ade115d4be80217945,670d05fee115d4be8021793f,"What exactly is dbt, and why does it exist?","<p>Before we dive into the details, let’s address a fundamental question: What exactly is dbt, and what purpose does it serve? Moreover, how is it superior to executing SQL scripts within, for instance</p>",2,False,2024-10-14 12:03:57.526,0
+6710edeac41538277220af0e,6710edd1c41538277220af0b,intro,<p>machine learning</p>,1,False,2024-10-17 10:58:50.459,0
+6710ee5cc41538277220af14,6710ee55c41538277220af11,intro,<p>csdfdsvd</p>,2,False,2024-10-17 11:00:44.483,0
+6710ee64c41538277220af17,6710ee55c41538277220af11,mlops,<p>wdefer</p>,3,False,2024-10-17 11:00:52.145,0
+6710f54d05b53f25781e6491,6710f54105b53f25781e648e,trbtg,<p>nhgnhnh</p>,3,False,2024-10-17 11:30:21.841,0
+6710f91305b53f25781e6494,6710f54105b53f25781e648e,wqrfeg,<p>grgrg</p>,1,False,2024-10-17 11:46:27.731,0
+67115246ad28e6f84a4fa84e,6711523cad28e6f84a4fa84b,intro,<p>dsvsvdsgvd</p>,1,False,2024-10-17 18:07:02.965,0
+67115251ad28e6f84a4fa851,6711523cad28e6f84a4fa84b,prompt,<p>engineering</p>,3,False,2024-10-17 18:07:13.169,0
