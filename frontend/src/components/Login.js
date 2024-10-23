@@ -5,6 +5,7 @@ import axios from 'axios';
 import LoadingUi from './LoadingUi';
 import Cookie from 'js-cookie';
 import {jwtDecode} from 'jwt-decode';  
+import api from "../api/api"
 
 export default function Login() {
 
@@ -37,7 +38,7 @@ export default function Login() {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:4000/api/user/login', {
+            const response = await api.post('/api/user/login', {
                 email: loginData.email,
                 password: loginData.password
             });
