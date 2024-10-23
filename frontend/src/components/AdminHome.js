@@ -12,6 +12,7 @@ import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag'
 import EmployeePerformance from './EmployeePerformance';
 import AdminLearningPaths from './AdminLearningPaths';
+import api from "../api/api"
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -38,7 +39,7 @@ const AdminHome = () => {
 
   // Fetch all courses
   const fetchCourses = async () => {
-    const response = await axios.get('http://localhost:4000/api/admin/get-courses', {
+    const response = await api.get('/api/admin/get-courses', {
       headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
     });
     setCourses(response.data);
@@ -46,7 +47,7 @@ const AdminHome = () => {
 
   // Fetch all employees
   const fetchEmployees = async () => {
-    const response = await axios.get('http://localhost:4000/api/admin/getAllEmployees', {
+    const response = await api.get('/api/admin/getAllEmployees', {
       headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
     });
     setEmployees(response.data);
@@ -54,7 +55,7 @@ const AdminHome = () => {
 
   // Fetch employee performance data
   const fetchPerformanceData = async () => {
-    const response = await axios.get('http://localhost:4000/api/admin/performance', {
+    const response = await api.get('/api/admin/performance', {
       headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
     });
     setPerformanceData(response.data);
@@ -63,7 +64,7 @@ const AdminHome = () => {
   const fetchCourseStats = async (courseId) => {
     if (!courseId) return;
     try {
-      const response = await axios.get(`http://localhost:4000/api/admin/course/${courseId}/stats`, {
+      const response = await api.get(`/api/admin/course/${courseId}/stats`, {
         headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
       });
       setCourseStats(response.data);
@@ -73,7 +74,7 @@ const AdminHome = () => {
   };
 
   const fetchEmployeeCourses = async () => {
-    const response = await axios.get('http://localhost:4000/api/admin/employee-courses', {
+    const response = await api.get('/api/admin/employee-courses', {
       headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
     });
     setEmployeesCoursesStats(response.data);
@@ -126,8 +127,8 @@ const AdminHome = () => {
     if (!selectedCourse || selectedEmployees.length === 0) return;
     try {
  
-      await axios.post(
-        `http://localhost:4000/api/admin/assign-courses/${selectedCourse}/assign`,
+      await api.post(
+        `/api/admin/assign-courses/${selectedCourse}/assign`,
         { employee_ids: selectedEmployees }, 
         {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
