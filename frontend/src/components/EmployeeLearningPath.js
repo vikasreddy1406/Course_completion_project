@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import mermaid from "mermaid";
 import { jwtDecode } from 'jwt-decode';
+import api from "../api/api"
 
 export default function EmployeeLearningPath() {
     const [learningPaths, setLearningPaths] = useState([]);
@@ -14,7 +15,7 @@ export default function EmployeeLearningPath() {
         const fetchLearningPaths = async () => {
             const decodedToken = jwtDecode(Cookie.get('accessToken'));
             const employeeId = decodedToken._id;
-            const response = await axios.get(`http://localhost:4000/api/learningpath/${employeeId}/get-learningpath`);
+            const response = await api.get(`/api/learningpath/${employeeId}/get-learningpath`);
             setLearningPaths(response.data);
         };
 

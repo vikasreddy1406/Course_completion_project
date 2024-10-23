@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale } from 'chart.js';
+import api from "../api/api"
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, ChartDataLabels);
 
@@ -22,7 +23,7 @@ const EmployeePerformance = () => {
   }, []);
 
   const fetchEmployees = async () => {
-    const response = await axios.get('http://localhost:4000/api/admin/employee-courses', {
+    const response = await api.get('/api/admin/employee-courses', {
       headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
     });
     setEmployees(response.data);

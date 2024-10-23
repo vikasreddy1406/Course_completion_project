@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Button } from 'flowbite-react';
 import { IoReturnDownBack } from "react-icons/io5";
 import img from "../../src/assests/man.jpg"
+import api from "../api/api"
 
 const CourseDetails = () => {
   const { courseId } = useParams();
@@ -23,7 +24,7 @@ const CourseDetails = () => {
   useEffect(() => {
     const fetchCourseDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/user/courses/${courseId}`, {
+        const response = await api.get(`/api/user/courses/${courseId}`, {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         });
         setCourse(response.data.course);
@@ -49,7 +50,7 @@ const CourseDetails = () => {
 
   const markAsCompleted = async (moduleId) => {
     try {
-      await axios.patch(`http://localhost:4000/api/user/courses/${courseId}/modules/${moduleId}`, {}, {
+      await api.patch(`/api/user/courses/${courseId}/modules/${moduleId}`, {}, {
         headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
       });
       const updatedModules = modules.map(mod =>
@@ -86,7 +87,7 @@ const CourseDetails = () => {
           <div className='w-full'>
             <img
               className="rounded-t-lg h-64 mt-8 w-full object-cover"
-              src={course.imageUrl ? `http://localhost:4000${course?.imageUrl}` : img}
+              src={course.imageUrl ? `${course?.imageUrl}` : img}
               alt={course.title || 'Placeholder image'}
             />
           </div>

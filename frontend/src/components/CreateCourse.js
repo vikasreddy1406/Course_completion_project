@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { alertContext } from '../context/alertContext';
+import api from "../api/api"
 
 const CreateCourse = () => {
   const [newCourse, setNewCourse] = useState({ title: '', description: '', tag: '' });
@@ -54,7 +55,7 @@ const CreateCourse = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:4000/api/admin/create-courses', formData, {
+      const response = await api.post('/api/admin/create-courses', formData, {
         headers: {
           Authorization: `Bearer ${Cookie.get('accessToken')}`,
           'Content-Type': 'multipart/form-data',
@@ -78,7 +79,7 @@ const CreateCourse = () => {
     const newModule = { module_title: moduleTitle, module_content: moduleContent, module_duration: moduleDuration };
 
     try {
-      const response = await axios.post(`http://localhost:4000/api/admin/courses/${courseId}/add-modules`, newModule, {
+      const response = await api.post(`/api/admin/courses/${courseId}/add-modules`, newModule, {
         headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
       });
       setModules([...modules, response.data.module]); 
@@ -95,7 +96,7 @@ const CreateCourse = () => {
 
   const handleSaveClick = async () => {
     try {
-      await axios.put(`http://localhost:4000/api/admin/courses/${courseId}/update-details`, {}, {
+      await api.put(`/api/admin/courses/${courseId}/update-details`, {}, {
         headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
       });
       showAlert('Course details updated successfully');
@@ -145,7 +146,7 @@ const CreateCourse = () => {
     }
 
     try {
-      await axios.post(`http://localhost:4000/api/admin/create-quiz/${courseId}`, { questions });
+      await api.post(`/api/admin/create-quiz/${courseId}`, { questions });
       showAlert('Quiz added successfully');
     } catch (error) {
       console.error('Error adding quiz:', error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import { alertContext } from '../context/alertContext';
+import api from "../api/api"
 
 const AdminCourseRecommendation = () => {
   const [employees, setEmployees] = useState([]);
@@ -16,7 +17,7 @@ const AdminCourseRecommendation = () => {
   useEffect(() => {
     async function fetchEmployees() {
       try {
-        const response = await axios.get('http://localhost:4000/api/admin/getAllEmployees', {
+        const response = await api.get('/api/admin/getAllEmployees', {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         });
         setEmployees(response.data);
@@ -49,8 +50,8 @@ const AdminCourseRecommendation = () => {
 
   const handleAssignCourse = async (courseId) => {
     try {
-      await axios.post(
-        `http://localhost:4000/api/admin/assign-courses/${courseId}/assign`,
+      await api.post(
+        `/api/admin/assign-courses/${courseId}/assign`,
         { employee_ids: [selectedEmployee] },
         {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },

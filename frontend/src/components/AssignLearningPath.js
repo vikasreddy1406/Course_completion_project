@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import { alertContext } from '../context/alertContext';
 import { useNavigate } from 'react-router-dom';
+import api from "../api/api"
 
 export default function AssignLearningPath() {
     const [employees, setEmployees] = useState([]);
@@ -19,7 +20,7 @@ export default function AssignLearningPath() {
     useEffect(() => {
         // Fetch employees
         const fetchEmployees = async () => {
-            const response = await axios.get('http://localhost:4000/api/admin/getAllEmployees', {
+            const response = await api.get('/api/admin/getAllEmployees', {
                 headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
             });
             setEmployees(response.data);
@@ -27,7 +28,7 @@ export default function AssignLearningPath() {
 
         // Fetch learning paths
         const fetchLearningPaths = async () => {
-            const response = await axios.get('http://localhost:4000/api/learningpath/get-learningpath');
+            const response = await api.get('/api/learningpath/get-learningpath');
             setLearningPaths(response.data);
         };
 
@@ -37,7 +38,7 @@ export default function AssignLearningPath() {
 
     const handleAssignLearningPath = async () => {
         try {
-            await axios.post('http://localhost:4000/api/learningpath/assign-learningpath', assignment);
+            await api.post('/api/learningpath/assign-learningpath', assignment);
             showAlert('Learning path assigned successfully');
             navigate("/admin")
         } catch (error) {

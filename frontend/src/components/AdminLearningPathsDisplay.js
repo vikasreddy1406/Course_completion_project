@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import mermaid from "mermaid";
+import api from "../api/api"
 
 export default function AdminLearningPathsDisplay() {
     const [employees, setEmployees] = useState([]);
@@ -11,7 +12,7 @@ export default function AdminLearningPathsDisplay() {
 
     useEffect(() => {
         const fetchEmployees = async () => {
-            const response = await axios.get('http://localhost:4000/api/admin/getAllEmployees', {
+            const response = await api.get('/api/admin/getAllEmployees', {
                 headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
             });
             setEmployees(response.data);
@@ -29,7 +30,7 @@ export default function AdminLearningPathsDisplay() {
     useEffect(() => {
         const fetchLearningPaths = async () => {
             if (selectedEmployee) {
-                const response = await axios.get(`http://localhost:4000/api/learningpath/${selectedEmployee}/get-learningpath`, {
+                const response = await api.get(`/api/learningpath/${selectedEmployee}/get-learningpath`, {
                     headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
                 });
                 setLearningPaths(response.data);

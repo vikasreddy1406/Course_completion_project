@@ -3,6 +3,7 @@ import axios from 'axios';
 import { TextInput, Label } from 'flowbite-react'; 
 import { alertContext } from '../context/alertContext';
 import { Navigate, useNavigate } from 'react-router-dom';
+import api from "../api/api"
 
 const CreateQuiz = () => {
   const [courses, setCourses] = useState([]);
@@ -25,7 +26,7 @@ const CreateQuiz = () => {
     
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/admin/courses-without-quiz');
+        const response = await api.get('/api/admin/courses-without-quiz');
         setCourses(response.data);
       } catch (error) {
         showAlert('Error fetching courses. Please try again.');
@@ -73,7 +74,7 @@ const CreateQuiz = () => {
     }
 
     try {
-      await axios.post(`http://localhost:4000/api/admin/create-quiz/${selectedCourse}`, { questions });
+      await api.post(`/api/admin/create-quiz/${selectedCourse}`, { questions });
       showAlert('Quiz added successfully');
       setQuestions([]); 
       navigate("/admin")

@@ -6,6 +6,7 @@ import { Button, Card } from 'flowbite-react';
 import { IoReturnDownBack } from 'react-icons/io5';
 import tick from "../assests/tick.jpg"
 import cross from "../assests/cross.png"
+import api from "../api/api"
 
 const QuizPage = () => {
   const { courseId } = useParams();
@@ -20,7 +21,7 @@ const QuizPage = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/user/quiz/${courseId}`, {
+        const response = await api.get(`/api/user/quiz/${courseId}`, {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         });
         setQuiz(response.data[0]);
@@ -45,7 +46,7 @@ const QuizPage = () => {
 
   const handleSubmitQuiz = async () => {
     try {
-      const response = await axios.post(`http://localhost:4000/api/user/submit-quiz/${courseId}`, {
+      const response = await api.post(`/api/user/submit-quiz/${courseId}`, {
         quizId: quiz._id,
         answers,
       }, {

@@ -9,6 +9,7 @@ import { alertContext } from '../context/alertContext';
 import LoadingUi from "./LoadingUi"; 
 import img from "../../src/assests/man.jpg" 
 import EmployeeLearningPath from './EmployeeLearningPath';
+import api from "../api/api"
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -37,7 +38,7 @@ const Home = () => {
 
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/user/get-courses', {
+        const response = await api.get('/api/user/get-courses', {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         });
         setCourses(response.data);
@@ -49,7 +50,7 @@ const Home = () => {
 
     const fetchCompletionStats = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/user/stats/completion', {
+        const response = await api.get('/api/user/stats/completion', {
           headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         });
         setCompletionStats(response.data);
@@ -71,7 +72,7 @@ const Home = () => {
     try {
       const decodedToken = jwtDecode(Cookie.get('accessToken'));
       const employeeId = decodedToken._id;
-      const response = await axios.get(`http://localhost:4000/api/user/certificate/${employeeId}/${courseId}`, {
+      const response = await api.get(`/api/user/certificate/${employeeId}/${courseId}`, {
         headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
         responseType: 'blob', 
       });
@@ -161,7 +162,7 @@ const Home = () => {
                 <a href={`/courses/${course.course_id?._id}`}>
                   <img
                     className="rounded-t-lg h-44 w-full object-cover"
-                    src={course.course_id?.imageUrl ? `http://localhost:4000${course.course_id?.imageUrl}` : img}
+                    src={course.course_id?.imageUrl ? `${course.course_id?.imageUrl}` : img}
                     alt={course.course_id?.title || 'Placeholder image'}
                   />
                 </a>

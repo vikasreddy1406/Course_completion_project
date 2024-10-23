@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import { alertContext } from '../context/alertContext';
 import { Navigate, useNavigate } from 'react-router-dom';
+import api from "../api/api"
 
 export default function AdminLearningPaths() {
     const [courses, setCourses] = useState([]);
@@ -17,7 +18,7 @@ export default function AdminLearningPaths() {
 
     useEffect(() => {
         const fetchCourses = async () => {
-            const response = await axios.get('http://localhost:4000/api/admin/get-courses', {
+            const response = await api.get('/api/admin/get-courses', {
                 headers: { Authorization: `Bearer ${Cookie.get('accessToken')}` },
             });
             setCourses(response.data);
@@ -27,7 +28,7 @@ export default function AdminLearningPaths() {
 
     const handleCreateLearningPath = async () => {
         try {
-            await axios.post('http://localhost:4000/api/learningpath/create-learningpath', {
+            await api.post('/api/learningpath/create-learningpath', {
                 title: learningPath.title,
                 description: learningPath.description,
                 courses: learningPath.selectedCourses,

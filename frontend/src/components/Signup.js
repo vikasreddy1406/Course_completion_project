@@ -3,6 +3,7 @@ import { alertContext } from "../context/alertContext";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import LoadingUi from "./LoadingUi";
+import api from "../api/api"
 
 export default function Signup() {
     const [signupData, setSignupData] = useState({
@@ -42,7 +43,7 @@ export default function Signup() {
         }
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:4000/api/user/register", {
+            const response = await api.post("/api/user/register", {
                 name: signupData.name,
                 email: signupData.email,
                 password: signupData.password,

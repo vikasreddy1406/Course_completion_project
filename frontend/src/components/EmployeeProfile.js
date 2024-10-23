@@ -5,6 +5,7 @@ import Chart from 'react-apexcharts';
 import { Tag } from 'primereact/tag';
 import img from "../../src/assests/image.png";
 import LoadingUi from './LoadingUi';
+import api from "../api/api"
 
 export default function EmployeeProfile() {
   const { employeeId } = useParams();
@@ -34,7 +35,7 @@ export default function EmployeeProfile() {
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/admin/employee-courses`);
+        const response = await api.get(`/api/admin/employee-courses`);
         const employeeData = response.data.find(emp => emp.employee_id === employeeId);
         if (employeeData) {
           setEmployee(employeeData);
