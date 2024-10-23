@@ -34,9 +34,9 @@ import learningPathRoutes from "./routes/learningPathRoutes.js"
 app.use('/api/user',userRoutes)
 app.use('/api/admin', adminRoutes);
 app.use('/api/learningpath',learningPathRoutes)
-app.use('/',(req,res)=>{
-    return res.json({"message":true})
-})
+// app.use('/',(req,res)=>{
+//     return res.json({"message":true})
+// })
 
 
 app.listen(PORT,()=>{
